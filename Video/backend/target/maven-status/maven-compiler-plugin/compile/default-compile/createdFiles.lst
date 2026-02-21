@@ -1,0 +1,4 @@
+com\videocall\controller\SignalingController.class
+com\videocall\config\WebSocketConfig.class
+com\videocall\WebRTCApplication.class
+com\videocall\model\SignalMessage.class

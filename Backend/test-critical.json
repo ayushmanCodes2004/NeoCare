@@ -1,0 +1,63 @@
+{
+  "patientId": "P999",
+  "patientName": "Lakshmi Reddy",
+  "workerId": "W003",
+  "phcId": "PHC_HYDERABAD_12",
+  "structured_data": {
+    "patient_info": {
+      "age": 42,
+      "gestationalWeeks": 36
+    },
+    "medical_history": {
+      "previousLSCS": true,
+      "badObstetricHistory": true,
+      "previousStillbirth": true,
+      "previousPretermDelivery": true,
+      "previousAbortion": true,
+      "systemicIllness": "None",
+      "chronicHypertension": true,
+      "diabetes": true,
+      "thyroidDisorder": false,
+      "smoking": false,
+      "tobaccoUse": true,
+      "alcoholUse": false
+    },
+    "vitals": {
+      "heightCm": 148.0,
+      "bmi": 32.0,
+      "bpSystolic": 180,
+      "bpDiastolic": 120
+    },
+    "lab_reports": {
+      "hemoglobin": 6.5,
+      "rhNegative": true,
+      "hivPositive": false,
+      "syphilisPositive": false,
+      "urineProtein": true,
+      "urineSugar": true
+    },
+    "obstetric_history": {
+      "birthOrder": 5,
+      "interPregnancyInterval": 12,
+      "stillbirthCount": 2,
+      "abortionCount": 1,
+      "pretermHistory": true
+    },
+    "pregnancy_details": {
+      "twinPregnancy": true,
+      "malpresentation": true,
+      "placentaPrevia": true,
+      "reducedFetalMovement": true,
+      "amnioticFluidNormal": false,
+      "umbilicalDopplerAbnormal": true
+    },
+    "current_symptoms": {
+      "headache": true,
+      "visualDisturbance": true,
+      "epigastricPain": true,
+      "decreasedUrineOutput": true,
+      "bleedingPerVagina": true,
+      "convulsions": true
+    }
+  }
+}

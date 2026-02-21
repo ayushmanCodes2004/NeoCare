@@ -1,0 +1,63 @@
+{
+  "patientId": "P12345",
+  "patientName": "Test Patient",
+  "workerId": "W001",
+  "phcId": "PHC001",
+  "structured_data": {
+    "patient_info": {
+      "age": 38,
+      "gestationalWeeks": 34
+    },
+    "medical_history": {
+      "previousLSCS": true,
+      "badObstetricHistory": false,
+      "previousStillbirth": false,
+      "previousPretermDelivery": false,
+      "previousAbortion": false,
+      "systemicIllness": "None",
+      "chronicHypertension": true,
+      "diabetes": false,
+      "thyroidDisorder": false,
+      "smoking": false,
+      "tobaccoUse": false,
+      "alcoholUse": false
+    },
+    "vitals": {
+      "heightCm": 152.0,
+      "bmi": 28.5,
+      "bpSystolic": 165,
+      "bpDiastolic": 110
+    },
+    "lab_reports": {
+      "hemoglobin": 9.8,
+      "rhNegative": false,
+      "hivPositive": false,
+      "syphilisPositive": false,
+      "urineProtein": true,
+      "urineSugar": false
+    },
+    "obstetric_history": {
+      "birthOrder": 3,
+      "interPregnancyInterval": 24,
+      "stillbirthCount": 0,
+      "abortionCount": 1,
+      "pretermHistory": false
+    },
+    "pregnancy_details": {
+      "twinPregnancy": false,
+      "malpresentation": false,
+      "placentaPrevia": false,
+      "reducedFetalMovement": false,
+      "amnioticFluidNormal": true,
+      "umbilicalDopplerAbnormal": false
+    },
+    "current_symptoms": {
+      "headache": true,
+      "visualDisturbance": true,
+      "epigastricPain": false,
+      "decreasedUrineOutput": false,
+      "bleedingPerVagina": false,
+      "convulsions": false
+    }
+  }
+}

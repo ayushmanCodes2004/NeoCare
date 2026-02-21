@@ -1,0 +1,277 @@
+/* NeoSure Horizontal Layout - Exact Design from Image */
+
+/* ============================================
+   APP LAYOUT - HORIZONTAL
+   ============================================ */
+.app-layout-horizontal {
+  min-height: 100vh;
+  background: var(--warm-wh);
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content-horizontal {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ============================================
+   HORIZONTAL TOPBAR
+   ============================================ */
+.horizontal-topbar {
+  background: white;
+  border-bottom: 1px solid rgba(196, 98, 45, 0.08);
+  box-shadow: 0 2px 8px rgba(44, 26, 14, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3%;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+/* Brand - Left Side */
+.brand-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.brand-icon-horizontal {
+  width: 48px;
+  height: 48px;
+  background: var(--terra);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.brand-text-horizontal {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-name-horizontal {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brown-dk);
+  letter-spacing: -0.02em;
+}
+
+.brand-tagline-horizontal {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-top: 2px;
+}
+
+/* Navigation - Center */
+.horizontal-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-link-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #9CA3AF;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-link-horizontal:hover {
+  color: var(--terra);
+  background: rgba(196, 98, 45, 0.05);
+}
+
+.nav-link-horizontal.active {
+  color: var(--terra);
+}
+
+.nav-link-horizontal.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1.125rem;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--terra);
+}
+
+/* Right Side - Notifications & User */
+.topbar-right-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.logout-btn-horizontal {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn-horizontal:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.notification-btn-horizontal {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  color: #6B7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notification-btn-horizontal:hover {
+  background: rgba(196, 98, 45, 0.05);
+  color: var(--terra);
+}
+
+.user-profile-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  cursor: pointer;
+}
+
+.user-info-horizontal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.125rem;
+}
+
+.user-name-horizontal {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--brown-dk);
+  line-height: 1;
+}
+
+.user-role-horizontal {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.user-avatar-horizontal {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, var(--terra) 0%, var(--terra-dk) 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(196, 98, 45, 0.2);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .topbar-container {
+    gap: 2rem;
+  }
+
+  .horizontal-nav {
+    gap: 0.25rem;
+  }
+
+  .nav-link-horizontal {
+    padding: 0.625rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .user-info-horizontal {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .topbar-container {
+    padding: 0 4%;
+    height: 64px;
+    gap: 1rem;
+  }
+
+  .brand-text-horizontal {
+    display: none;
+  }
+
+  .brand-icon-horizontal {
+    width: 40px;
+    height: 40px;
+  }
+
+  .horizontal-nav {
+    gap: 0;
+  }
+
+  .nav-link-horizontal {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .nav-link-horizontal span {
+    display: none;
+  }
+
+  .topbar-right-horizontal {
+    gap: 0.75rem;
+  }
+
+  .user-avatar-horizontal {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}

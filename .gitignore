@@ -1,0 +1,50 @@
+# IDE
+.vscode/
+.idea/
+*.iml
+.kiro/
+
+# Backend - Maven
+Backend/target/
+Backend/.mvn/
+Backend/mvnw
+Backend/mvnw.cmd
+
+# Backend - Spring Boot
+Backend/*.log
+Backend/*.gz
+Backend/spring.log
+
+# Frontend - Node
+Frontend/anc-frontend/node_modules/
+Frontend/anc-frontend/dist/
+Frontend/anc-frontend/.env.local
+Frontend/anc-frontend/.env.production
+
+# Python
+Medical RAG Pipeline/__pycache__/
+Medical RAG Pipeline/*.pyc
+Medical RAG Pipeline/.venv/
+Medical RAG Pipeline/venv/
+Medical RAG Pipeline/.env
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.h2.db
+
+# Temporary files
+*.tmp
+*.bak
+*.cache

@@ -1,0 +1,53 @@
+{
+  "summary": {
+    "passed": 0,
+    "total": 5,
+    "score": 0.0,
+    "all_passed": false
+  },
+  "results": {
+    "TC1": {
+      "passed": false,
+      "failures": [
+        "\u274c triggered_rules: expected ['hypertension'], got []",
+        "\u274c Answer missing required phrase: 'suspected pre-eclampsia'",
+        "\u274c Answer missing required phrase: 'alpha methyl dopa'",
+        "\u274c Answer missing required phrase: 'refer'",
+        "\u274c Answer contains forbidden phrase: 'gdm'"
+      ]
+    },
+    "TC2": {
+      "passed": false,
+      "failures": [
+        "\u274c overall_risk: expected HIGH, got MODERATE",
+        "\u274c gestational_age_weeks: expected 36, got None",
+        "\u274c Answer missing required phrase: 'mgso4'",
+        "\u274c Answer missing required phrase: 'mild pre-eclampsia'",
+        "\u274c Answer contains forbidden phrase: 'severe pre-eclampsia'"
+      ]
+    },
+    "TC3": {
+      "passed": false,
+      "failures": [
+        "Error: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=120)"
+      ]
+    },
+    "TC4": {
+      "passed": false,
+      "failures": [
+        "\u274c overall_risk: expected HIGH, got MODERATE",
+        "\u274c gestational_age_weeks: expected 34, got None",
+        "\u274c Answer missing required phrase: 'suspected pre-eclampsia'",
+        "\u274c Answer missing required phrase: 'proteinuria unconfirmed'",
+        "\u274c Answer missing required phrase: 'confirm at referral'",
+        "\u274c Answer missing required phrase: 'danger signs'"
+      ]
+    },
+    "TC5": {
+      "passed": false,
+      "failures": [
+        "Error: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=120)"
+      ]
+    }
+  }
+}

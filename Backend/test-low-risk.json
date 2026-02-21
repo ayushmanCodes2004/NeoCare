@@ -1,0 +1,63 @@
+{
+  "patientId": "P001",
+  "patientName": "Anita Kumar",
+  "workerId": "W002",
+  "phcId": "PHC_DELHI_05",
+  "structured_data": {
+    "patient_info": {
+      "age": 25,
+      "gestationalWeeks": 20
+    },
+    "medical_history": {
+      "previousLSCS": false,
+      "badObstetricHistory": false,
+      "previousStillbirth": false,
+      "previousPretermDelivery": false,
+      "previousAbortion": false,
+      "systemicIllness": "None",
+      "chronicHypertension": false,
+      "diabetes": false,
+      "thyroidDisorder": false,
+      "smoking": false,
+      "tobaccoUse": false,
+      "alcoholUse": false
+    },
+    "vitals": {
+      "heightCm": 160.0,
+      "bmi": 22.5,
+      "bpSystolic": 110,
+      "bpDiastolic": 70
+    },
+    "lab_reports": {
+      "hemoglobin": 12.5,
+      "rhNegative": false,
+      "hivPositive": false,
+      "syphilisPositive": false,
+      "urineProtein": false,
+      "urineSugar": false
+    },
+    "obstetric_history": {
+      "birthOrder": 1,
+      "interPregnancyInterval": 0,
+      "stillbirthCount": 0,
+      "abortionCount": 0,
+      "pretermHistory": false
+    },
+    "pregnancy_details": {
+      "twinPregnancy": false,
+      "malpresentation": false,
+      "placentaPrevia": false,
+      "reducedFetalMovement": false,
+      "amnioticFluidNormal": true,
+      "umbilicalDopplerAbnormal": false
+    },
+    "current_symptoms": {
+      "headache": false,
+      "visualDisturbance": false,
+      "epigastricPain": false,
+      "decreasedUrineOutput": false,
+      "bleedingPerVagina": false,
+      "convulsions": false
+    }
+  }
+}

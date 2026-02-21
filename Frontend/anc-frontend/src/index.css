@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables - NeoSure Design Tokens */
+:root {
+  --terra:     #C4622D;   /* Primary terracotta — buttons, accents, hovers */
+  --terra-dk:  #9E4A1E;   /* Dark terracotta — hover state for primary buttons */
+  --terra-lt:  #E8835A;   /* Light terracotta — CTA italic text, gradients */
+  --peach:     #F5E6D8;   /* Hero background, risk card chips, risk section bg */
+  --peach-mid: #EDD5BF;   /* Trust bar background, tab pill background */
+  --cream:     #FAF4EE;   /* Section backgrounds (How It Works, Features alt) */
+  --warm-wh:   #FEFBF7;   /* Page body background */
+  --brown-dk:  #2C1A0E;   /* Primary text, headings */
+  --brown-md:  #5C3A1E;   /* Nav links, hero body text */
+  --muted:     #8C6B52;   /* Subtitles, placeholder text, muted labels */
+  --green:     #3A7D5C;   /* GREEN risk dot, green text */
+  --amber:     #C4860A;   /* AMBER risk dot, amber text */
+  --red:       #C03040;   /* RED risk, error states */
+  --green-bg:  #E6F4ED;   /* GREEN risk card background */
+  --amber-bg:  #FFF4DC;   /* AMBER risk card background */
+  --red-bg:    #FDEAEB;   /* RED risk card background, alert box background */
+  --dot:       rgba(196, 98, 45, 0.18); /* Dot pattern colour for decorative circles */
+}
+
+/* Global Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Utility Classes for Dashboard */
+.bg-primary {
+  background-color: #C4622D;
+}
+
+.bg-primary\/90 {
+  background-color: rgba(196, 98, 45, 0.9);
+}
+
+.bg-primary\/10 {
+  background-color: rgba(196, 98, 45, 0.1);
+}
+
+.text-primary {
+  color: #C4622D;
+}
+
+.border-primary {
+  border-color: #C4622D;
+}
+
+.border-primary\/10 {
+  border-color: rgba(196, 98, 45, 0.1);
+}
+
+.border-primary\/20 {
+  border-color: rgba(196, 98, 45, 0.2);
+}
+
+.shadow-primary\/5 {
+  box-shadow: 0 1px 3px 0 rgba(196, 98, 45, 0.05), 0 1px 2px -1px rgba(196, 98, 45, 0.05);
+}
+
+.shadow-primary\/40 {
+  box-shadow: 0 20px 25px -5px rgba(196, 98, 45, 0.4), 0 8px 10px -6px rgba(196, 98, 45, 0.4);
+}
+
+.bg-terra {
+  background-color: var(--terra);
+}
+
+.bg-terra\/90 {
+  background-color: rgba(196, 98, 45, 0.9);
+}
+
+.bg-terra-dk {
+  background-color: var(--terra-dk);
+}
+
+.text-terra {
+  color: var(--terra);
+}
+
+.border-terra {
+  border-color: var(--terra);
+}
+
+.border-terra\/10 {
+  border-color: rgba(196, 98, 45, 0.1);
+}
+
+.border-terra\/20 {
+  border-color: rgba(196, 98, 45, 0.2);
+}
+
+.shadow-terra\/5 {
+  box-shadow: 0 1px 3px 0 rgba(196, 98, 45, 0.05), 0 1px 2px -1px rgba(196, 98, 45, 0.05);
+}
+
+.shadow-terra\/40 {
+  box-shadow: 0 20px 25px -5px rgba(196, 98, 45, 0.4), 0 8px 10px -6px rgba(196, 98, 45, 0.4);
+}
+
+.bg-terra\/10 {
+  background-color: rgba(196, 98, 45, 0.1);
+}
+
+.bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bg-cream {
+  background-color: var(--cream);
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+/* Size utilities */
+.size-12 {
+  width: 3rem;
+  height: 3rem;
+}
+
+.size-3 {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--warm-wh);
+  color: var(--brown-dk);
+  overflow-x: hidden;
+}
+
+/* Fade Up Animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* NeoSure Button Styles */
+.btn-terra {
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.25rem;
+  background-color: #C4622D;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-terra:hover {
+  background-color: #9E4A1E;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-terra-outline {
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.25rem;
+  border: 2px solid #C4622D;
+  background-color: transparent;
+  color: #C4622D;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-terra-outline:hover {
+  background-color: #C4622D;
+  color: white;
+}
+
+.btn-ghost {
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.25rem;
+  border: 2px solid #5C3A1E;
+  background-color: transparent;
+  color: #2C1A0E;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-ghost:hover {
+  border-color: #C4622D;
+  color: #C4622D;
+}
+
+/* Card Styles */
+.card-elevated {
+  background-color: white;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(196, 98, 45, 0.1);
+  transition: all 0.3s;
+}
+
+.card-elevated:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Decorative Dot Pattern */
+.dot-pattern {
+  background-image: radial-gradient(rgba(196, 98, 45, 0.18) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+
+.dot-pattern-light {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+
+/* Section Headers */
+.section-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #C4622D;
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #2C1A0E;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 0.875rem;
+  color: #8C6B52;
+  max-width: 42rem;
+  line-height: 1.75;
+}
+
+/* Risk Badges */
+.badge-critical {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #FDEAEB;
+  color: #C03040;
+  border: 1px solid rgba(192, 48, 64, 0.2);
+}
+
+.badge-high {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #FFF4DC;
+  color: #C4860A;
+  border: 1px solid rgba(196, 134, 10, 0.2);
+}
+
+.badge-low {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #E6F4ED;
+  color: #3A7D5C;
+  border: 1px solid rgba(58, 125, 92, 0.2);
+}
+
+/* Form Inputs */
+.input-field {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.input-field:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #C4622D;
+  border-color: transparent;
+}
+
+.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+/* Animations */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.backdrop-blur-glass {
+  backdrop-filter: blur(14px);
+}
+
+/* Gradient Utilities */
+.bg-gradient-radial {
+  background: radial-gradient(ellipse at center, var(--tw-gradient-stops));
+}
+

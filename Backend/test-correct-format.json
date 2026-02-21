@@ -1,0 +1,63 @@
+{
+  "patientId": "P12345",
+  "patientName": "Priya Sharma",
+  "workerId": "W001",
+  "phcId": "PHC_BANGALORE_01",
+  "structured_data": {
+    "patient_info": {
+      "age": 38,
+      "gestationalWeeks": 34
+    },
+    "medical_history": {
+      "previousLSCS": true,
+      "badObstetricHistory": false,
+      "previousStillbirth": false,
+      "previousPretermDelivery": false,
+      "previousAbortion": true,
+      "chronicHypertension": true,
+      "diabetes": false,
+      "thyroidDisorder": false,
+      "systemicIllness": null,
+      "smoking": false,
+      "tobacco_use": false,
+      "alcohol_use": false
+    },
+    "vitals": {
+      "heightCm": 152.0,
+      "bmi": 28.5,
+      "bpSystolic": 165,
+      "bpDiastolic": 110
+    },
+    "lab_reports": {
+      "hemoglobin": 9.8,
+      "rhNegative": false,
+      "hivPositive": false,
+      "syphilisPositive": false,
+      "urineProtein": true,
+      "urineSugar": false
+    },
+    "obstetric_history": {
+      "birth_order": 3,
+      "inter_pregnancy_interval": 24,
+      "stillbirth_count": 0,
+      "abortion_count": 1,
+      "preterm_history": false
+    },
+    "pregnancy_details": {
+      "twinPregnancy": false,
+      "malpresentation": false,
+      "placentaPrevia": false,
+      "reducedFetalMovement": false,
+      "amnioticFluidNormal": true,
+      "umbilicalDopplerAbnormal": false
+    },
+    "current_symptoms": {
+      "headache": true,
+      "visualDisturbance": true,
+      "epigastricPain": false,
+      "decreasedUrineOutput": false,
+      "bleedingPerVagina": false,
+      "convulsions": false
+    }
+  }
+}

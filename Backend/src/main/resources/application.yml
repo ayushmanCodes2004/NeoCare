@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: anc-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/NeoSure
+    username: postgres
+    password: ayushman@2004
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+
+server:
+  port: 8080
+
+jwt:
+  secret: anc-service-jwt-secret-key-minimum-32-characters-required-for-hmac-sha256
+  expiration: 86400000
+
+fastapi:
+  base-url: http://localhost:8000
+  connect-timeout: 5000
+  read-timeout: 30000
+  api-key: your-fastapi-secret-key
+
+logging:
+  level:
+    com.anc: DEBUG
+    org.hibernate.SQL: DEBUG
