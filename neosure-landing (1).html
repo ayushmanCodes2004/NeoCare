@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NeoSure — Safeguarding Every Mother, Every Pregnancy</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --terra:     #C4622D;
+    --terra-dk:  #9E4A1E;
+    --terra-lt:  #E8835A;
+    --peach:     #F5E6D8;
+    --peach-mid: #EDD5BF;
+    --cream:     #FAF4EE;
+    --warm-wh:   #FEFBF7;
+    --brown-dk:  #2C1A0E;
+    --brown-md:  #5C3A1E;
+    --muted:     #8C6B52;
+    --green:     #3A7D5C;
+    --amber:     #C4860A;
+    --red:       #C03040;
+    --green-bg:  #E6F4ED;
+    --amber-bg:  #FFF4DC;
+    --red-bg:    #FDEAEB;
+    --dot:       rgba(196,98,45,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--warm-wh); color: var(--brown-dk); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 6%;
+    background: rgba(250,244,238,0.93);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(196,98,45,0.1);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem; font-weight: 700; color: var(--brown-dk);
+  }
+  .logo-mark {
+    width: 36px; height: 36px; background: var(--terra); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .logo-text-wrap { display: flex; flex-direction: column; line-height: 1; }
+  .logo-sub { font-family: 'Jost', sans-serif; font-size: 0.56rem; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 1px; }
+
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 0.87rem; font-weight: 500; color: var(--brown-md); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--terra); }
+
+  .nav-right { display: flex; gap: 0.8rem; align-items: center; }
+  .btn-ghost {
+    padding: 0.48rem 1.25rem; border: 1.5px solid var(--terra); border-radius: 4px;
+    background: transparent; color: var(--terra); font-size: 0.84rem; font-weight: 600;
+    cursor: pointer; font-family: 'Jost', sans-serif; transition: all 0.2s;
+  }
+  .btn-ghost:hover { background: var(--terra); color: #fff; }
+  .btn-primary {
+    padding: 0.52rem 1.4rem; border: none; border-radius: 4px;
+    background: var(--terra); color: #fff; font-size: 0.84rem; font-weight: 600;
+    cursor: pointer; font-family: 'Jost', sans-serif; transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--terra-dk); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; background: var(--peach);
+    display: flex; align-items: center;
+    padding: 7.5rem 6% 5rem; position: relative; overflow: hidden;
+  }
+  .hero-dots-tr {
+    position: absolute; top: 60px; right: 40px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background-image: radial-gradient(var(--dot) 1.5px, transparent 1.5px);
+    background-size: 16px 16px; pointer-events: none;
+  }
+  .hero-dots-bl {
+    position: absolute; bottom: 40px; left: 30px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background-image: radial-gradient(var(--dot) 1.5px, transparent 1.5px);
+    background-size: 16px 16px; pointer-events: none;
+  }
+
+  .hero-content { max-width: 560px; position: relative; z-index: 1; animation: fadeUp 0.7s ease both; }
+
+  .eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--terra); margin-bottom: 1rem; }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.9rem, 5.5vw, 4.5rem); font-weight: 700; line-height: 1.08;
+    color: var(--brown-dk); margin-bottom: 1.3rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--terra); }
+
+  .hero p { font-size: 1rem; line-height: 1.8; color: var(--brown-md); max-width: 460px; margin-bottom: 2.2rem; }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-fill {
+    padding: 0.85rem 2rem; border-radius: 4px; background: var(--terra); color: #fff;
+    border: none; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; font-family: 'Jost', sans-serif;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-fill:hover { background: var(--terra-dk); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(158,74,30,0.3); }
+  .btn-outline {
+    padding: 0.85rem 2rem; border-radius: 4px;
+    background: transparent; border: 1.5px solid var(--brown-md); color: var(--brown-dk);
+    font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; font-family: 'Jost', sans-serif; transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--terra); color: var(--terra); }
+
+  /* Hero card */
+  .hero-visual {
+    position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+    width: min(400px, 37vw); z-index: 1; animation: fadeUp 0.7s 0.18s ease both;
+  }
+  .risk-card {
+    background: #fff; border-radius: 14px; padding: 1.6rem;
+    box-shadow: 0 18px 55px rgba(44,26,14,0.13);
+  }
+  .rc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .rc-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .rbadge { padding: 0.24rem 0.8rem; border-radius: 4px; font-size: 0.76rem; font-weight: 700; }
+  .rbadge.r { background: var(--red-bg); color: var(--red); }
+  .rbadge.a { background: var(--amber-bg); color: var(--amber); }
+  .rbadge.g { background: var(--green-bg); color: var(--green); }
+  .pname { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; }
+  .pmeta { font-size: 0.76rem; color: var(--muted); margin-bottom: 1.1rem; }
+  .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-bottom: 1.1rem; }
+  .pchip { background: var(--peach); border-radius: 7px; padding: 0.55rem 0.75rem; }
+  .plbl { font-size: 0.65rem; color: var(--muted); font-weight: 500; }
+  .pval { font-size: 0.88rem; font-weight: 700; color: var(--brown-dk); }
+  .pval.f { color: var(--red); }
+  .alert-box {
+    background: var(--red-bg); border-left: 3px solid var(--red);
+    border-radius: 0 7px 7px 0; padding: 0.65rem 0.85rem;
+    font-size: 0.77rem; color: var(--red); line-height: 1.5;
+  }
+  .fpill {
+    position: absolute; display: flex; align-items: center; gap: 0.4rem;
+    background: #fff; border-radius: 50px; padding: 0.42rem 0.85rem;
+    box-shadow: 0 4px 14px rgba(44,26,14,0.12);
+    font-size: 0.73rem; font-weight: 600; white-space: nowrap;
+  }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--peach-mid); padding: 1.3rem 6%;
+    display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    border-top: 1px solid rgba(196,98,45,0.12);
+    border-bottom: 1px solid rgba(196,98,45,0.12);
+  }
+  .trust-item { display: flex; align-items: center; gap: 0.55rem; }
+  .trust-item span:first-child { font-size: 1.05rem; }
+  .trust-item span:last-child { font-size: 0.81rem; font-weight: 500; color: var(--brown-md); }
+
+  /* ── STATS ── */
+  .stats-band {
+    background: var(--terra); padding: 4rem 6%;
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .stats-band::after {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background-image: radial-gradient(rgba(255,255,255,0.1) 1.5px, transparent 1.5px);
+    background-size: 16px 16px; pointer-events: none;
+  }
+  .sitem { text-align: center; }
+  .snum {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.2rem; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 0.4rem;
+  }
+  .snum span { color: rgba(255,255,255,0.65); font-size: 2.2rem; }
+  .sdesc { font-size: 0.81rem; color: rgba(255,255,255,0.72); line-height: 1.5; }
+
+  /* ── SHARED SECTION ── */
+  .sec { padding: 5.5rem 6%; }
+  .sec-hdr { margin-bottom: 3.5rem; }
+  .sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.9rem); font-weight: 700; line-height: 1.18;
+    color: var(--brown-dk); margin-bottom: 0.8rem;
+  }
+  .sec-title em { font-style: italic; color: var(--terra); }
+  .sec-sub { font-size: 0.93rem; color: var(--muted); max-width: 510px; line-height: 1.75; }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--cream); }
+  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.8rem; }
+  .step {
+    background: #fff; border-radius: 12px; padding: 2rem;
+    border: 1px solid rgba(196,98,45,0.1); position: relative; overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .step:hover { transform: translateY(-4px); box-shadow: 0 14px 38px rgba(44,26,14,0.09); }
+  .step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--terra); }
+  .step-n { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 700; color: var(--peach-mid); line-height: 1; margin-bottom: 0.8rem; }
+  .step h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.55rem; }
+  .step p { font-size: 0.86rem; color: var(--muted); line-height: 1.72; }
+
+  /* ── FEATURES ── */
+  .feats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
+  .fcard {
+    background: var(--cream); border-radius: 12px; padding: 1.75rem;
+    display: flex; gap: 1.1rem; border: 1px solid rgba(196,98,45,0.08);
+    transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+  }
+  .fcard:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(44,26,14,0.08); background: #fff; }
+  .fcard.wide { grid-column: 1/-1; }
+  .ficon {
+    width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+  }
+  .fi1 { background: rgba(196,98,45,0.12); }
+  .fi2 { background: var(--green-bg); }
+  .fi3 { background: var(--amber-bg); }
+  .fi4 { background: var(--peach); }
+  .fcard h3 { font-size: 0.98rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .fcard p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── RISK LEVELS ── */
+  .risk-sec { background: var(--peach); position: relative; overflow: hidden; }
+  .risk-sec::after {
+    content: ''; position: absolute; bottom: -50px; right: -50px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background-image: radial-gradient(var(--dot) 1.5px, transparent 1.5px);
+    background-size: 18px 18px; pointer-events: none;
+  }
+  .rlcards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+  .rlcard { border-radius: 12px; padding: 2rem; text-align: center; transition: transform 0.25s; }
+  .rlcard:hover { transform: translateY(-4px); }
+  .rlcard.g { background: var(--green-bg); border: 1px solid rgba(58,125,92,0.2); }
+  .rlcard.a { background: var(--amber-bg); border: 1px solid rgba(196,134,10,0.2); }
+  .rlcard.r { background: var(--red-bg);   border: 1px solid rgba(192,48,64,0.2); }
+  .rldot { width: 58px; height: 58px; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .rlcard.g .rldot { background: var(--green); }
+  .rlcard.a .rldot { background: var(--amber); }
+  .rlcard.r .rldot { background: var(--red); }
+  .rlcard h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .rlcard.g h3 { color: var(--green); }
+  .rlcard.a h3 { color: var(--amber); }
+  .rlcard.r h3 { color: var(--red); }
+  .rlcard p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+  /* ── CTA ── */
+  .cta {
+    background: var(--brown-dk); padding: 6rem 6%; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(196,98,45,0.18), transparent 70%);
+    pointer-events: none;
+  }
+  .cta::after {
+    content: ''; position: absolute; top: -60px; left: -60px;
+    width: 360px; height: 360px; border-radius: 50%;
+    background-image: radial-gradient(rgba(255,255,255,0.055) 1.5px, transparent 1.5px);
+    background-size: 18px 18px; pointer-events: none;
+  }
+  .cta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.1rem, 4.5vw, 3.3rem); font-weight: 700;
+    color: #fff; margin-bottom: 1rem; position: relative;
+  }
+  .cta h2 em { font-style: italic; color: var(--terra-lt); }
+  .cta p { font-size: 0.97rem; color: rgba(255,255,255,0.6); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.75; position: relative; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; position: relative; flex-wrap: wrap; }
+  .btn-cta { padding: 0.85rem 2.2rem; border-radius: 4px; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: 'Jost', sans-serif; transition: all 0.2s; }
+  .btn-cta.fill { background: var(--terra); color: #fff; border: none; }
+  .btn-cta.fill:hover { background: var(--terra-lt); transform: translateY(-2px); }
+  .btn-cta.ghost { background: transparent; border: 1.5px solid rgba(255,255,255,0.3); color: #fff; }
+  .btn-cta.ghost:hover { border-color: rgba(255,255,255,0.7); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #180C06; padding: 2rem 6%;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .ftlogo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: #fff; }
+  .ftlogo span { color: var(--terra-lt); }
+  footer p { font-size: 0.77rem; color: rgba(255,255,255,0.32); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+  @media (max-width: 900px) {
+    .hero-visual { display: none; }
+    .stats-band { grid-template-columns: repeat(2,1fr); }
+    .steps { grid-template-columns: 1fr; }
+    .feats { grid-template-columns: 1fr; }
+    .rlcards { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .trust-bar { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">🌸</div>
+    <div class="logo-text-wrap">
+      NeoSure
+      <span class="logo-sub">Maternal Health</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#risk">Risk Levels</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-primary">Register</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots-tr"></div>
+  <div class="hero-dots-bl"></div>
+
+  <div class="hero-content">
+    <p class="eyebrow">Supporting Mothers Across India</p>
+    <h1>Safeguarding Every<br><em>Mother</em>,<br>Every Pregnancy</h1>
+    <p>NeoSure is your trusted health companion. Enter a mother's visit details and instantly know if she needs extra care — with clear guidance on exactly what to do next.</p>
+    <div class="hero-btns">
+      <button class="btn-fill">Check a Mother's Health</button>
+      <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See How It Works →</button>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="fpill" style="top:-18px;right:8px;color:var(--brown-md)">🏥 Ministry of Health Approved</div>
+    <div class="risk-card">
+      <div class="rc-header">
+        <span class="rc-label">Check-up Visit · Week 28</span>
+        <span class="rbadge r">🔴 Needs Urgent Care</span>
+      </div>
+      <div class="pname">Priya Sharma</div>
+      <div class="pmeta">Age 24 · 2nd Pregnancy · Raichur District</div>
+      <div class="pgrid">
+        <div class="pchip"><div class="plbl">Blood Levels</div><div class="pval f">Too Low ↓</div></div>
+        <div class="pchip"><div class="plbl">Blood Pressure</div><div class="pval f">Too High ↑</div></div>
+        <div class="pchip"><div class="plbl">Urine Test</div><div class="pval f">Abnormal ↑</div></div>
+        <div class="pchip"><div class="plbl">Baby's Heartbeat</div><div class="pval">Normal ✓</div></div>
+      </div>
+      <div class="alert-box"><strong>⚡ Please refer to a doctor today —</strong> Priya's blood levels are very low and her blood pressure is high. This needs immediate attention.</div>
+    </div>
+    <div class="fpill" style="bottom:-16px;left:0;color:var(--green)">✅ Health guidelines checked</div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>🇮🇳</span><span>Aligned to National Health Guidelines</span></div>
+  <div class="trust-item"><span>📱</span><span>Works Offline on Any Phone</span></div>
+  <div class="trust-item"><span>🔒</span><span>Safe &amp; Confidential Records</span></div>
+  <div class="trust-item"><span>⚡</span><span>Instant Results, No Waiting</span></div>
+</div>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="sitem"><div class="snum">45<span>K+</span></div><div class="sdesc">Health workers across<br>India supported</div></div>
+  <div class="sitem"><div class="snum">6</div><div class="sdesc">Key health signs<br>checked every visit</div></div>
+  <div class="sitem"><div class="snum">75<span>%</span></div><div class="sdesc">At-risk mothers go unnoticed<br>without early checks</div></div>
+  <div class="sitem"><div class="snum">100<span>%</span></div><div class="sdesc">Every warning backed by<br>national health guidelines</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="sec how">
+  <div class="sec-hdr">
+    <p class="eyebrow">How It Works</p>
+    <h2 class="sec-title">Three Simple Steps to<br><em>Keep Mothers Safe</em></h2>
+    <p class="sec-sub">NeoSure fits right into your daily routine. No extra training, no complicated forms — just fill in what you already collect at every visit.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">01</div>
+      <h3>Fill In the Visit Details</h3>
+      <p>Enter the mother's health readings from her MCP card — things like her blood levels, blood pressure, urine test result, and how the baby is doing. The form is simple and guides you through each field.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">02</div>
+      <h3>NeoSure Reviews Her Health</h3>
+      <p>NeoSure instantly checks the readings against national health guidelines — the same guidelines you follow in your work. It looks for early warning signs so nothing is missed.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">03</div>
+      <h3>Get a Clear, Simple Result</h3>
+      <p>You'll see a colour-coded result — Green, Amber, or Red — with easy instructions on what to do next. If the mother needs urgent help, NeoSure will help you connect her to a doctor right away.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="sec">
+  <div class="sec-hdr">
+    <p class="eyebrow">Features</p>
+    <h2 class="sec-title">Made for <em>You</em>,<br>the Health Worker</h2>
+    <p class="sec-sub">Every part of NeoSure is built around your daily work — so you can focus on caring for mothers, not figuring out the tool.</p>
+  </div>
+  <div class="feats">
+    <div class="fcard">
+      <div class="ficon fi1">🧠</div>
+      <div>
+        <h3>Smart Health Checks</h3>
+        <p>NeoSure checks each mother's readings carefully and reliably, every single time. It never guesses — if something looks concerning, it tells you clearly and explains why in simple language.</p>
+      </div>
+    </div>
+    <div class="fcard">
+      <div class="ficon fi2">📋</div>
+      <div>
+        <h3>Backed by National Guidelines</h3>
+        <p>Every suggestion NeoSure gives is based on the official health guidelines from the Ministry of Health. You can trust the advice — it's the same guidance doctors follow.</p>
+      </div>
+    </div>
+    <div class="fcard">
+      <div class="ficon fi3">⚡</div>
+      <div>
+        <h3>Instant Doctor Alert for Urgent Cases</h3>
+        <p>When a mother needs urgent care, NeoSure helps you reach a doctor immediately. You don't have to figure it out alone — the tool guides you through the next step.</p>
+      </div>
+    </div>
+    <div class="fcard">
+      <div class="ficon fi4">📱</div>
+      <div>
+        <h3>Works on Any Phone, Anywhere</h3>
+        <p>No internet? No problem. NeoSure works even in areas with poor signal. It opens like a regular website on any mobile phone — no app download needed.</p>
+      </div>
+    </div>
+    <div class="fcard wide">
+      <div class="ficon fi2" style="background:var(--peach)">🔒</div>
+      <div>
+        <h3>Always Safe, Always Careful</h3>
+        <p>NeoSure is designed to never give wrong advice. When it's not completely sure about something, it automatically asks for a doctor's help instead of guessing. Your mothers' safety always comes first — and the tool covers all 6 key checks from the national health program.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK LEVELS -->
+<section id="risk" class="sec risk-sec">
+  <div class="sec-hdr">
+    <p class="eyebrow">Risk Classification</p>
+    <h2 class="sec-title">Three Colours.<br><em>Always Clear. Always Helpful.</em></h2>
+    <p class="sec-sub">After entering a mother's details, you'll see one of three colours — each tells you exactly what care she needs right now.</p>
+  </div>
+  <div class="rlcards">
+    <div class="rlcard g">
+      <div class="rldot">✓</div>
+      <h3>GREEN — All Good</h3>
+      <p>All health readings are normal. Continue with the regular visit schedule. NeoSure will remind you when her next check-up is due.</p>
+    </div>
+    <div class="rlcard a">
+      <div class="rldot">⚠</div>
+      <h3>AMBER — Keep a Close Watch</h3>
+      <p>One or more readings need monitoring. Visit her more frequently and watch for any changes. NeoSure tells you exactly what to look out for next time.</p>
+    </div>
+    <div class="rlcard r">
+      <div class="rldot">🚨</div>
+      <h3>RED — She Needs Help Now</h3>
+      <p>A serious warning sign has been found. Please refer her to a health facility today. NeoSure will help you connect her to a doctor immediately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Every life saved starts<br>with <em>early detection</em></h2>
+  <p>Every mother deserves to be safe. With NeoSure by your side, no warning sign goes unnoticed — and no mother is left without the care she needs.</p>
+  <div class="cta-btns">
+    <button class="btn-cta fill">Start Helping Mothers</button>
+    <button class="btn-cta ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">Learn More →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftlogo">Neo<span>Sure</span></div>
+  <p>Team One Step at a Time · DSATM · Hack-A-League 4.0</p>
+  <p>Aligned to MOHFW National Maternal Health Guidelines</p>
+</footer>
+
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }});
+  }, {threshold:0.08});
+
+  document.querySelectorAll('.step,.fcard,.rlcard').forEach(el => {
+    el.style.opacity='0'; el.style.transform='translateY(18px)';
+    el.style.transition='opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s, background 0.25s';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
