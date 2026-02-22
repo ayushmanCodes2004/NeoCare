@@ -1,57 +1,77 @@
 package com.anc.controller;
 
-import com.anc.dto.AuthResponseDTO;
-import com.anc.dto.DoctorProfileResponseDTO;
+import com.anc.dto.DoctorAuthResponseDTO;
+import com.anc.dto.DoctorLoginRequestDTO;
 import com.anc.dto.DoctorSignupRequestDTO;
-import com.anc.dto.LoginRequestDTO;
 import com.anc.entity.DoctorEntity;
 import com.anc.service.DoctorAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.UUID;
-
+@Slf4j
 @RestController
-@RequestMapping("/api/auth/doctor")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/doctor/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class DoctorAuthController {
 
     private final DoctorAuthService doctorAuthService;
 
+    /**
+     * POST /api/doctor/auth/signup
+     *
+     * Body: { fullName, phone, email, password, specialization, hospital, district, registrationNo }
+     * Response: { token, role="DOCTOR", doctorId, fullName, specialization, hospital, ... }
+     */
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponseDTO> signup(@Valid @RequestBody DoctorSignupRequestDTO request) {
-        AuthResponseDTO response = doctorAuthService.signup(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DoctorAuthResponseDTO> signup(
+            @Valid @RequestBody DoctorSignupRequestDTO request) {
+
+        log.info("Doctor signup for phone: {}", request.getPhone());
+        return ResponseEntity.status(HttpStatus.CREATED).body(doctorAuthService.signup(request));
     }
 
+    /**
+     * POST /api/doctor/auth/login
+     *
+     * Body: { phone, password }
+     * Response: { token, role="DOCTOR", doctorId, fullName, ... }
+     */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
-        AuthResponseDTO response = doctorAuthService.login(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DoctorAuthResponseDTO> login(
+            @Valid @RequestBody DoctorLoginRequestDTO request) {
+
+        log.info("Doctor login for phone: {}", request.getPhone());
+        return ResponseEntity.ok(doctorAuthService.login(request));
     }
 
+    /**
+     * GET /api/doctor/auth/me
+     * Header: Authorization: Bearer <token>
+     */
     @GetMapping("/me")
-    public ResponseEntity<DoctorProfileResponseDTO> getProfile(
+    public ResponseEntity<DoctorAuthResponseDTO> getMe(
             @AuthenticationPrincipal DoctorEntity doctor) {
-        DoctorProfileResponseDTO response = doctorAuthService.getDoctorProfile(doctor);
-        return ResponseEntity.ok(response);
-    }
 
-    @PutMapping("/availability")
-    public ResponseEntity<Map<String, String>> updateAvailability(
-            @AuthenticationPrincipal DoctorEntity doctor,
-            @RequestBody Map<String, Boolean> request) {
-        
-        doctorAuthService.updateAvailability(doctor.getId(), request.get("isAvailable"));
-        
-        return ResponseEntity.ok(Map.of(
-            "message", "Availability updated successfully",
-            "isAvailable", request.get("isAvailable").toString()
-        ));
+        DoctorAuthResponseDTO response = DoctorAuthResponseDTO.builder()
+                .doctorId(doctor.getId())
+                .role("DOCTOR")
+                .fullName(doctor.getFullName())
+                .phone(doctor.getPhone())
+                .email(doctor.getEmail())
+                .specialization(doctor.getSpecialization())
+                .hospital(doctor.getHospital())
+                .district(doctor.getDistrict())
+                .registrationNo(doctor.getRegistrationNo())
+                .isAvailable(doctor.getIsAvailable())
+                .message("Profile fetched")
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -1,14 +1,24 @@
 package com.anc.entity;
 
+import com.anc.security.EncryptedStringConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
+/**
+ * Consultation request — created automatically when a visit is high risk.
+ *
+ * Links: visit → patient → worker → doctor
+ * Tracks: status lifecycle, video call URLs/tokens, doctor's notes.
+ *
+ * Priority queue: ORDER BY priority_score DESC, created_at ASC
+ *   CRITICAL = 100 (shown first)
+ *   HIGH     = 70
+ *   MEDIUM   = 40
+ */
 @Entity
 @Table(name = "consultations")
 @Data
@@ -19,56 +29,90 @@ public class ConsultationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @Column(name = "id", updatable = false, nullable = false)
+    private String id;
 
-    @Column(nullable = false)
-    private UUID patientId;
+    // ─── Linked records ───────────────────────────────────────────────────────
+    @Column(name = "visit_id", nullable = false)
+    private String visitId;
 
-    @Column(nullable = false)
-    private UUID workerId;
+    @Column(name = "patient_id", nullable = false)
+    private String patientId;
 
-    @Column(nullable = false)
-    private UUID doctorId;
+    @Column(name = "worker_id", nullable = false)
+    private String workerId;
 
-    @Column(nullable = false)
-    private String visitId; // Reference to ANC visit
+    /** Null until a doctor accepts the consultation */
+    @Column(name = "doctor_id")
+    private String doctorId;
 
-    @Column(nullable = false)
-    private String status; // REQUESTED, SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
+    // ─── Risk info (copied from visit) ────────────────────────────────────────
+    @Column(name = "risk_level", nullable = false, length = 20)
+    private String riskLevel;
 
-    @Column(nullable = false)
-    private String riskLevel; // LOW, HIGH, CRITICAL
+    @Column(name = "is_high_risk")
+    private Boolean isHighRisk;
 
-    private String roomId; // Video call room ID
+    /**
+     * Numeric priority for ORDER BY:
+     *   CRITICAL = 100, HIGH = 70, MEDIUM = 40
+     */
+    @Column(name = "priority_score")
+    private Integer priorityScore;
 
-    private LocalDateTime scheduledAt;
+    // ─── Status lifecycle ─────────────────────────────────────────────────────
+    /**
+     * PENDING    → waiting for a doctor to accept
+     * ACCEPTED   → doctor accepted, video call not yet started
+     * IN_PROGRESS→ video call active
+     * COMPLETED  → doctor submitted notes
+     * CANCELLED  → worker or system cancelled
+     */
+    @Column(name = "status", nullable = false, length = 30)
+    @Builder.Default
+    private String status = "PENDING";
 
-    private LocalDateTime startedAt;
+    // ─── Video call (Daily.co) ────────────────────────────────────────────────
+    /** Daily.co room URL e.g. "https://anc.daily.co/consult-uuid" */
+    @Column(name = "room_url", length = 500)
+    private String roomUrl;
 
-    private LocalDateTime completedAt;
+    /** Meeting token for doctor — passed to Daily.co JS SDK */
+    @Column(name = "doctor_token", columnDefinition = "TEXT")
+    private String doctorToken;
 
-    @Column(length = 2000)
+    /** Meeting token for ANC worker — passed via notification */
+    @Column(name = "worker_token", columnDefinition = "TEXT")
+    private String workerToken;
+
+    // ─── Doctor's notes (filled on COMPLETED) ────────────────────────────────
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "doctor_notes", columnDefinition = "TEXT")
     private String doctorNotes;
 
-    @Column(length = 2000)
-    private String prescription;
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "diagnosis", columnDefinition = "TEXT")
+    private String diagnosis;
 
-    @Column(length = 1000)
-    private String recommendations;
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "action_plan", columnDefinition = "TEXT")
+    private String actionPlan;
 
-    @Column(updatable = false)
+    // ─── Timestamps ───────────────────────────────────────────────────────────
+    @Column(name = "accepted_at")
+    private LocalDateTime acceptedAt;
+
+    @Column(name = "call_started_at")
+    private LocalDateTime callStartedAt;
+
+    @Column(name = "completed_at")
+    private LocalDateTime completedAt;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 }

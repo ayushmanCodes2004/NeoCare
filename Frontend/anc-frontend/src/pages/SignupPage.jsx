@@ -192,7 +192,7 @@ export default function SignupPage() {
               disabled={loading}
               className={`auth-submit-btn ${loading ? 'loading' : ''}`}
             >
-              {!loading && 'Create Account'}
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </div>
         </form>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getMyPatients } from '../api/patientApi';
+import { getPatients } from '../api/patientApi';
 import { Search, UserPlus, ShieldPlus, Users, AlertTriangle, Calendar, ChevronRight, Activity, TrendingUp, Clock, Filter } from 'lucide-react';
 import { cn } from '../utils/cn';
 import Spinner from '../components/ui/Spinner';
@@ -20,7 +20,7 @@ export default function PatientListPage() {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const data = await getMyPatients();
+        const data = await getPatients();
         setPatients(data);
       } catch (err) {
         console.error('Failed to fetch patients:', err);

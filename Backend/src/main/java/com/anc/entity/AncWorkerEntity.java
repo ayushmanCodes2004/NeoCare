@@ -1,5 +1,6 @@
 package com.anc.entity;
 
+import com.anc.security.EncryptedStringConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,13 +29,16 @@ public class AncWorkerEntity implements UserDetails {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "full_name", nullable = false)
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "full_name", nullable = false, length = 500)
     private String fullName;
 
-    @Column(name = "phone", unique = true, nullable = false, length = 10)
+    // Phone is used for login - cannot be encrypted
+    @Column(name = "phone", unique = true, nullable = false, length = 15)
     private String phone;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "email", unique = true, nullable = false, length = 500)
     private String email;
 
     @Column(name = "password_hash", nullable = false)

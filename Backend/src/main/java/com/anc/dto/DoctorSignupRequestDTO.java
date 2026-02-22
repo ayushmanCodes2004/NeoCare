@@ -4,44 +4,47 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+/**
+ * Doctor signup request:
+ * {
+ *   "fullName":       "Dr. Priya Sharma",
+ *   "phone":          "9988776655",
+ *   "email":          "priya@hospital.in",
+ *   "password":       "SecurePass123",
+ *   "specialization": "Obstetrics & Gynaecology",
+ *   "hospital":       "District Hospital Bangalore Rural",
+ *   "district":       "Bangalore Rural",
+ *   "registrationNo": "KA-12345"
+ * }
+ */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class DoctorSignupRequestDTO {
 
     @NotBlank(message = "Full name is required")
     @JsonProperty("fullName")
     private String fullName;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
-    @JsonProperty("email")
-    private String email;
-
-    @NotBlank(message = "Phone is required")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone must be 10 digits")
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[6-9]\\d{9}$", message = "Enter a valid 10-digit Indian mobile number")
     @JsonProperty("phone")
     private String phone;
 
+    @Email(message = "Enter a valid email address")
+    @JsonProperty("email")
+    private String email;
+
     @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     @JsonProperty("password")
     private String password;
 
-    @NotBlank(message = "Specialization is required")
     @JsonProperty("specialization")
     private String specialization;
 
-    @NotBlank(message = "License number is required")
-    @JsonProperty("licenseNumber")
-    private String licenseNumber;
-
-    @NotBlank(message = "Hospital is required")
+    @NotBlank(message = "Hospital name is required")
     @JsonProperty("hospital")
     private String hospital;
 
@@ -49,6 +52,6 @@ public class DoctorSignupRequestDTO {
     @JsonProperty("district")
     private String district;
 
-    @JsonProperty("yearsOfExperience")
-    private Integer yearsOfExperience;
+    @JsonProperty("registrationNo")
+    private String registrationNo;
 }

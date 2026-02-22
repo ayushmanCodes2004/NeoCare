@@ -25,11 +25,11 @@ export default function DoctorLoginPage() {
     setApiError(null);
     setLoading(true);
     
-    console.log('Attempting doctor login with email:', data.email);
+    console.log('Attempting doctor login with phone:', data.phone);
     
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/auth/doctor/login`, {
-        phone: data.email, // Send email in phone field for doctor login
+      const response = await axios.post(`${API_BASE_URL}/api/doctor/auth/login`, {
+        phone: data.phone,
         password: data.password,
       });
       
@@ -37,19 +37,19 @@ export default function DoctorLoginPage() {
       
       // Store token first
       const token = response.data.token;
-      localStorage.setItem('token', token);
-      localStorage.setItem('userRole', 'DOCTOR');
-      localStorage.setItem('doctorId', response.data.workerId);
+      localStorage.setItem('anc_token', token);
+      localStorage.setItem('anc_role', 'DOCTOR');
       
       // Fetch full doctor profile to get specialization
       try {
-        const profileResponse = await axios.get(`${API_BASE_URL}/api/auth/doctor/me`, {
+        const profileResponse = await axios.get(`${API_BASE_URL}/api/doctor/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
         console.log('Profile response:', profileResponse.data);
         
-        localStorage.setItem('doctorInfo', JSON.stringify({
+        localStorage.setItem('anc_user', JSON.stringify({
+          doctorId: profileResponse.data.doctorId,
           fullName: profileResponse.data.fullName,
           email: profileResponse.data.email,
           phone: profileResponse.data.phone,
@@ -60,7 +60,8 @@ export default function DoctorLoginPage() {
       } catch (profileErr) {
         console.error('Profile fetch error:', profileErr);
         // Fallback if profile fetch fails
-        localStorage.setItem('doctorInfo', JSON.stringify({
+        localStorage.setItem('anc_user', JSON.stringify({
+          doctorId: response.data.doctorId,
           fullName: response.data.fullName,
           email: response.data.email,
           phone: response.data.phone,
@@ -138,22 +139,22 @@ export default function DoctorLoginPage() {
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="auth-form">
           <div className="form-group">
-            <label className="form-label">Email Address</label>
+            <label className="form-label">Phone Number</label>
             <input
-              type="email"
-              placeholder="doctor@hospital.com"
-              className={`form-input ${errors.email ? 'error' : ''}`}
-              {...register('email', {
-                required: 'Email is required',
+              type="tel"
+              placeholder="9876543210"
+              className={`form-input ${errors.phone ? 'error' : ''}`}
+              {...register('phone', {
+                required: 'Phone number is required',
                 pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Enter a valid email address',
+                  value: /^[6-9]\d{9}$/,
+                  message: 'Enter a valid 10-digit mobile number',
                 },
               })}
             />
-            {errors.email && (
+            {errors.phone && (
               <span className="form-error">
-                ⚠ {errors.email.message}
+                ⚠ {errors.phone.message}
               </span>
             )}
           </div>

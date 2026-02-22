@@ -11,6 +11,11 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 5
       connection-timeout: 30000
+  
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
 
   jpa:
     hibernate:
@@ -34,6 +39,15 @@ fastapi:
   connect-timeout: 5000
   read-timeout: 30000
   api-key: your-fastapi-secret-key
+
+doctor:
+  auto-assign-district: true
+
+app:
+  encryption:
+    # IMPORTANT: Change this in production! Use environment variable: APP_ENCRYPTION_KEY
+    # Must be exactly 32 characters for AES-256
+    key: "CHANGE_THIS_TO_32_BYTE_SECRET!!"
 
 logging:
   level:

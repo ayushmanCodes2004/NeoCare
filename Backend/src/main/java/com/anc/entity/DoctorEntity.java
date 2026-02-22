@@ -1,10 +1,10 @@
 package com.anc.entity;
 
+import com.anc.security.EncryptedStringConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
+/**
+ * Doctor account entity.
+ *
+ * Implements UserDetails — same pattern as AncWorkerEntity.
+ * Login identifier: phone number (unique across ALL users — workers + doctors)
+ * Role: "ROLE_DOCTOR" returned in getAuthorities()
+ *
+ * isAvailable: doctor can toggle ON/OFF to accept consultations.
+ */
 @Entity
 @Table(name = "doctors")
 @Data
@@ -24,82 +32,79 @@ public class DoctorEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @Column(name = "id", updatable = false, nullable = false)
+    private String id;
 
-    @Column(nullable = false)
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "full_name", nullable = false, length = 500)
     private String fullName;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false, unique = true)
+    /** Phone = unique login identifier across the entire system - cannot be encrypted */
+    @Column(name = "phone", nullable = false, unique = true, length = 15)
     private String phone;
 
-    @Column(nullable = false)
-    private String password;
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "email", unique = true, length = 500)
+    private String email;
 
-    @Column(nullable = false)
-    private String specialization; // Gynecologist, Obstetrician, etc.
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
-    @Column(nullable = false)
-    private String licenseNumber;
+    /** e.g. "Obstetrics & Gynaecology" */
+    @Column(name = "specialization")
+    private String specialization;
 
-    @Column(nullable = false)
+    @Column(name = "hospital")
     private String hospital;
 
-    @Column(nullable = false)
+    @Column(name = "district")
     private String district;
 
-    private Integer yearsOfExperience;
+    /** Medical council registration number */
+    @Column(name = "registration_no", length = 100)
+    private String registrationNo;
 
-    @Column(nullable = false)
-    private String role = "DOCTOR";
+    /** Account active flag — false blocks login */
+    @Column(name = "is_active")
+    @Builder.Default
+    private Boolean isActive = true;
 
+    /** Availability toggle — false means doctor won't receive new consultations */
+    @Column(name = "is_available")
+    @Builder.Default
     private Boolean isAvailable = true;
 
-    @Column(updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
+    // ─── UserDetails ──────────────────────────────────────────────────────────
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
+    /** ROLE_DOCTOR — used by SecurityConfig to restrict doctor-only endpoints */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_DOCTOR"));
     }
 
     @Override
-    public String getUsername() {
-        return email;
-    }
+    public String getPassword() { return passwordHash; }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public String getUsername() { return phone; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return Boolean.TRUE.equals(isActive); }
 
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return Boolean.TRUE.equals(isActive); }
 }

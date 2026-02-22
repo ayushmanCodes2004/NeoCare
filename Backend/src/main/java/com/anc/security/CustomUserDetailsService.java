@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * Custom UserDetailsService implementation for loading user details.
- * Supports both ANC workers (by phone) and doctors (by email).
- * Used by Spring Security for authentication.
+ * Updated to check BOTH anc_workers and doctors tables by phone number.
+ * 
+ * Spring Security calls loadUserByUsername(phone) for every authenticated request.
+ * We try the worker table first, then the doctor table.
+ * If neither has this phone: throw UsernameNotFoundException → 401.
  * 
  * Requirements: 3.2, 19.6
  */
@@ -25,34 +28,34 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final DoctorRepository doctorRepository;
 
     /**
-     * Load user details by username (phone for workers, email for doctors).
-     * First tries to find an ANC worker by phone, then tries to find a doctor by email.
+     * Load user details by phone number.
+     * Checks both ANC workers and doctors tables.
      * 
-     * @param username the phone number or email to search for
+     * @param phone the phone number to search for
      * @return UserDetails object containing user information
      * @throws UsernameNotFoundException if user is not found
      * 
      * Requirements: 3.2, 19.6
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("Loading user details for username: {}", username);
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        log.debug("Loading user by phone: {}", phone);
         
-        // Try to find ANC worker by phone
-        var worker = ancWorkerRepository.findByPhone(username);
+        // Check ANC workers first
+        var worker = ancWorkerRepository.findByPhone(phone);
         if (worker.isPresent()) {
-            log.debug("Found ANC worker with phone: {}", username);
+            log.debug("Found ANC worker for phone: {}", phone);
             return worker.get();
         }
         
-        // Try to find doctor by email
-        var doctor = doctorRepository.findByEmail(username);
+        // Then check doctors
+        var doctor = doctorRepository.findByPhone(phone);
         if (doctor.isPresent()) {
-            log.debug("Found doctor with email: {}", username);
+            log.debug("Found doctor for phone: {}", phone);
             return doctor.get();
         }
         
-        log.warn("User not found with username: {}", username);
-        throw new UsernameNotFoundException("User not found with username: " + username);
+        log.warn("No user found for phone: {}", phone);
+        throw new UsernameNotFoundException("No user registered with phone: " + phone);
     }
 }

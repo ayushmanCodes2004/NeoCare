@@ -37,11 +37,31 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/signup", "/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/doctor/signup", "/api/auth/doctor/login").permitAll()
+                        // ── Public ──────────────────────────────────────────────
+                        .requestMatchers("/api/auth/signup").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/doctor/auth/signup").permitAll()
+                        .requestMatchers("/api/doctor/auth/login").permitAll()
                         .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/api/doctor/**").hasRole("DOCTOR")
-                        .requestMatchers("/api/consultations/**").hasAnyRole("WORKER", "DOCTOR")
+                        
+                        // ── Swagger/OpenAPI Documentation ──────────────────────
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/api-tester.html").permitAll()
+
+                        // ── Doctor-only ──────────────────────────────────────────
+                        .requestMatchers("/api/doctor/auth/me").hasRole("DOCTOR")
+                        .requestMatchers("/api/consultations/queue").hasRole("DOCTOR")
+                        .requestMatchers("/api/consultations/my-history").hasRole("DOCTOR")
+                        .requestMatchers("/api/consultations/*/accept").hasRole("DOCTOR")
+                        .requestMatchers("/api/consultations/*/start-call").hasRole("DOCTOR")
+                        .requestMatchers("/api/consultations/*/complete").hasRole("DOCTOR")
+
+                        // ── Both roles (worker sees patient consultations, doctor sees them too) ──
+                        .requestMatchers("/api/consultations/**").authenticated()
+
+                        // ── Everything else needs valid JWT ─────────────────────
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

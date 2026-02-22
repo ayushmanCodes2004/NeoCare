@@ -1,6 +1,8 @@
-export default function Spinner({ size = 'md' }) {
-  const sizes = { sm: 'h-4 w-4', md: 'h-8 w-8', lg: 'h-12 w-12' };
+export default function Spinner({ lg }) {
+  const size = lg ? 'h-10 w-10 border-[3px]' : 'h-5 w-5 border-2';
   return (
-    <div className={`animate-spin rounded-full border-4 border-blue-200 border-t-blue-600 ${sizes[size]}`} />
+    <div 
+      className={`${size} animate-spin rounded-full border-teal-500 border-t-transparent`} 
+    />
   );
 }

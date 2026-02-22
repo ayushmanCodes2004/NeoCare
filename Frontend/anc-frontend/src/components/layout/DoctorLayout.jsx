@@ -1,0 +1,87 @@
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
+import { useDoctorAuth } from '../../hooks/useDoctorAuth';
+import { 
+  LayoutDashboard, 
+  ListTodo, 
+  History, 
+  LogOut, 
+  Stethoscope 
+} from 'lucide-react';
+import { clsx } from 'clsx';
+
+export default function DoctorLayout() {
+  const { doctor, logout } = useDoctorAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/doctor/login');
+  };
+
+  const navItems = [
+    { path: '/doctor/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/doctor/queue', icon: ListTodo, label: 'Queue' },
+    { path: '/doctor/history', icon: History, label: 'History' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-navy-950">
+      {/* Top Navigation */}
+      <nav className="glass border-b border-white/10 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-8">
+              <Link to="/doctor/dashboard" className="flex items-center gap-2">
+                <Stethoscope size={24} className="text-teal-400" />
+                <span className="font-display text-xl font-bold text-teal-400">
+                  Doctor Portal
+                </span>
+              </Link>
+              <div className="hidden md:flex items-center gap-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={clsx(
+                        'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all',
+                        isActive
+                          ? 'bg-teal-500/20 text-teal-400'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                      )}
+                    >
+                      <Icon size={18} />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <div className="text-right hidden sm:block">
+                <p className="text-sm font-medium text-slate-200">{doctor?.fullName}</p>
+                <p className="text-xs text-slate-500">{doctor?.specialization}</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-all"
+                title="Logout"
+              >
+                <LogOut size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Outlet />
+      </main>
+    </div>
+  );
+}

@@ -1,20 +1,10 @@
-import axiosInstance from './axiosInstance';
+import api from './axiosInstance';
 
-/**
- * Patient API — matches PatientController.java endpoints
- */
+// POST /api/patients
+export const createPatient = (data) => api.post('/api/patients', data).then(r => r.data);
 
-export const createPatient = async (data) => {
-  const response = await axiosInstance.post('/api/patients', data);
-  return response.data;
-};
+// GET /api/patients
+export const getPatients = () => api.get('/api/patients').then(r => r.data);
 
-export const getMyPatients = async () => {
-  const response = await axiosInstance.get('/api/patients');
-  return response.data;
-};
-
-export const getPatientById = async (patientId) => {
-  const response = await axiosInstance.get(`/api/patients/${patientId}`);
-  return response.data;
-};
+// GET /api/patients/:id
+export const getPatient = (id) => api.get(`/api/patients/${id}`).then(r => r.data);

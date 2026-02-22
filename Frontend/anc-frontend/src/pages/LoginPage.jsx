@@ -115,7 +115,7 @@ export default function LoginPage() {
             disabled={loading}
             className={`auth-submit-btn ${loading ? 'loading' : ''}`}
           >
-            {!loading && 'Sign In'}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 

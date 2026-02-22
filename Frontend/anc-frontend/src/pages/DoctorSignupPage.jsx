@@ -25,26 +25,37 @@ export default function DoctorSignupPage() {
     setApiError(null);
     setLoading(true);
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/auth/doctor/signup`, data);
+      // Map frontend field names to backend expected names
+      const payload = {
+        fullName: data.fullName,
+        phone: data.phone,
+        email: data.email,
+        password: data.password,
+        specialization: data.specialization,
+        hospital: data.hospital,
+        district: data.district,
+        registrationNo: data.licenseNumber // Backend expects registrationNo
+      };
+      
+      const response = await axios.post(`${API_BASE_URL}/api/doctor/auth/signup`, payload);
       
       // Store token and user info
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userRole', 'DOCTOR');
-      localStorage.setItem('doctorId', response.data.workerId);
-      localStorage.setItem('doctorInfo', JSON.stringify({
+      localStorage.setItem('anc_token', response.data.token);
+      localStorage.setItem('anc_role', 'DOCTOR');
+      localStorage.setItem('anc_user', JSON.stringify({
+        doctorId: response.data.doctorId,
         fullName: response.data.fullName,
         email: response.data.email,
         phone: response.data.phone,
         specialization: data.specialization,
-        hospital: response.data.healthCenter,
+        hospital: response.data.hospital,
         district: response.data.district
       }));
       console.log('Signup successful! Redirecting to doctor dashboard...');
       console.log('Stored data:', {
         token: !!response.data.token,
-        userRole: localStorage.getItem('userRole'),
-        doctorId: localStorage.getItem('doctorId'),
-        doctorInfo: localStorage.getItem('doctorInfo')
+        role: localStorage.getItem('anc_role'),
+        user: localStorage.getItem('anc_user')
       });
       
       // Force navigation to doctor dashboard
@@ -243,28 +254,6 @@ export default function DoctorSignupPage() {
             {errors.district && (
               <span className="form-error">
                 ⚠ {errors.district.message}
-              </span>
-            )}
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Years of Experience</label>
-            <input
-              type="number"
-              placeholder="5"
-              min="0"
-              className={`form-input ${errors.yearsOfExperience ? 'error' : ''}`}
-              {...register('yearsOfExperience', {
-                required: 'Years of experience is required',
-                min: {
-                  value: 0,
-                  message: 'Must be 0 or greater',
-                },
-              })}
-            />
-            {errors.yearsOfExperience && (
-              <span className="form-error">
-                ⚠ {errors.yearsOfExperience.message}
               </span>
             )}
           </div>

@@ -1,5 +1,6 @@
 package com.anc.entity;
 
+import com.anc.security.EncryptedStringConverter;
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,7 +29,8 @@ public class AncVisitEntity {
     @Column(name = "patient_id")
     private String patientId;
 
-    @Column(name = "patient_name")
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "patient_name", length = 500)
     private String patientName;
 
     @Column(name = "worker_id")

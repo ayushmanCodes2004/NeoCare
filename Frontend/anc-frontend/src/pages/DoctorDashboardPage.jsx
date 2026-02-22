@@ -25,12 +25,12 @@ export default function DoctorDashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const storedDoctorInfo = JSON.parse(localStorage.getItem('doctorInfo') || '{}');
+      const token = localStorage.getItem('anc_token');
+      const storedDoctorInfo = JSON.parse(localStorage.getItem('anc_user') || '{}');
       setDoctorInfo(storedDoctorInfo);
 
       // Fetch pending consultations (sorted by risk)
-      const response = await axios.get(`${API_BASE_URL}/api/consultations/pending`, {
+      const response = await axios.get(`${API_BASE_URL}/api/consultations/queue`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -51,7 +51,7 @@ export default function DoctorDashboardPage() {
   const fetchPatientReport = async (patientId, visitId) => {
     setLoadingReport(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('anc_token');
       
       // Fetch visit details with full report
       const response = await axios.get(`${API_BASE_URL}/api/anc/visits/${visitId}`, {
@@ -74,10 +74,10 @@ export default function DoctorDashboardPage() {
 
   const handleStartConsultation = async (consultationId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('anc_token');
       
       // Accept consultation first
-      await axios.put(
+      await axios.post(
         `${API_BASE_URL}/api/consultations/${consultationId}/accept`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }

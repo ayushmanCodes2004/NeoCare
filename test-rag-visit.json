@@ -1,0 +1,82 @@
+{
+  "clinical_summary": "26-year-old G2P1 at 24 weeks gestation with mild anemia (Hb 11.5) and normal blood pressure",
+  "structured_data": {
+    "patient_info": {
+      "patientId": "TEST-001",
+      "name": "Test Patient",
+      "age": 26,
+      "gravida": 2,
+      "para": 1,
+      "livingChildren": 1,
+      "gestationalWeeks": 24,
+      "lmpDate": "2024-08-01",
+      "estimatedDueDate": "2025-05-08"
+    },
+    "vitals": {
+      "weightKg": 65.0,
+      "heightCm": 160.0,
+      "bmi": 25.4,
+      "bpSystolic": 120,
+      "bpDiastolic": 80,
+      "pulseRate": 78,
+      "respiratoryRate": 18,
+      "temperatureCelsius": 37.0,
+      "pallor": false,
+      "pedalEdema": false
+    },
+    "medical_history": {
+      "previousLSCS": false,
+      "badObstetricHistory": false,
+      "previousStillbirth": false,
+      "previousPretermDelivery": false,
+      "previousAbortion": false,
+      "systemicIllness": "None",
+      "chronicHypertension": false,
+      "diabetes": false,
+      "thyroidDisorder": false,
+      "smoking": false,
+      "tobaccoUse": false,
+      "alcoholUse": false
+    },
+    "lab_reports": {
+      "hemoglobin": 11.5,
+      "plateletCount": null,
+      "bloodGroup": "O+",
+      "rhNegative": false,
+      "urineProtein": false,
+      "urineSugar": false,
+      "fastingBloodSugar": 90.0,
+      "ogtt2hrPG": null,
+      "hivPositive": false,
+      "syphilisPositive": false,
+      "serumCreatinine": null,
+      "ast": null,
+      "alt": null
+    },
+    "obstetric_history": {
+      "birthOrder": null,
+      "interPregnancyInterval": null,
+      "stillbirthCount": 0,
+      "abortionCount": 0,
+      "pretermHistory": false
+    },
+    "pregnancy_details": {
+      "twinPregnancy": false,
+      "malpresentation": false,
+      "placentaPrevia": false,
+      "reducedFetalMovement": false,
+      "amnioticFluidNormal": true,
+      "umbilicalDopplerAbnormal": false
+    },
+    "current_symptoms": {
+      "headache": false,
+      "visualDisturbance": false,
+      "epigastricPain": false,
+      "decreasedUrineOutput": false,
+      "bleedingPerVagina": false,
+      "convulsions": false
+    }
+  },
+  "care_level": "PHC",
+  "verbose": false
+}

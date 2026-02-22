@@ -1,19 +1,18 @@
 package com.anc.service;
 
-import com.anc.dto.AuthResponseDTO;
-import com.anc.dto.DoctorProfileResponseDTO;
+import com.anc.dto.DoctorAuthResponseDTO;
+import com.anc.dto.DoctorLoginRequestDTO;
 import com.anc.dto.DoctorSignupRequestDTO;
-import com.anc.dto.LoginRequestDTO;
 import com.anc.entity.DoctorEntity;
 import com.anc.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DoctorAuthService {
@@ -23,98 +22,69 @@ public class DoctorAuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthResponseDTO signup(DoctorSignupRequestDTO request) {
-        // Check if email already exists
-        if (doctorRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
-        }
+    public DoctorAuthResponseDTO signup(DoctorSignupRequestDTO request) {
+        log.info("Doctor signup for phone: {}", request.getPhone());
 
-        // Check if phone already exists
         if (doctorRepository.existsByPhone(request.getPhone())) {
             throw new RuntimeException("Phone number already registered");
         }
+        if (request.getEmail() != null && doctorRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already registered");
+        }
 
-        // Create doctor entity
         DoctorEntity doctor = DoctorEntity.builder()
                 .fullName(request.getFullName())
-                .email(request.getEmail())
                 .phone(request.getPhone())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .specialization(request.getSpecialization())
-                .licenseNumber(request.getLicenseNumber())
+                .email(request.getEmail())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .specialization(
+                    request.getSpecialization() != null
+                        ? request.getSpecialization()
+                        : "Obstetrics & Gynaecology"
+                )
                 .hospital(request.getHospital())
                 .district(request.getDistrict())
-                .yearsOfExperience(request.getYearsOfExperience())
-                .role("DOCTOR")
+                .registrationNo(request.getRegistrationNo())
+                .isActive(true)
                 .isAvailable(true)
                 .build();
 
-        doctorRepository.save(doctor);
+        doctor = doctorRepository.save(doctor);
+        log.info("Doctor created — ID: {}", doctor.getId());
 
-        // Generate JWT token with doctor ID
-        String token = jwtService.generateToken(doctor, doctor.getId());
-
-        return AuthResponseDTO.builder()
-                .token(token)
-                .workerId(doctor.getId())
-                .fullName(doctor.getFullName())
-                .email(doctor.getEmail())
-                .phone(doctor.getPhone())
-                .healthCenter(doctor.getHospital())
-                .district(doctor.getDistrict())
-                .message("Doctor registered successfully")
-                .build();
+        // Pass role="DOCTOR" so JwtService embeds it in the token
+        String token = jwtService.generateToken(doctor.getPhone(), doctor.getId(), "DOCTOR");
+        return buildResponse(doctor, token, "Account created successfully");
     }
 
-    public AuthResponseDTO login(LoginRequestDTO request) {
-        // Authenticate using email (stored in phone field for doctors)
+    public DoctorAuthResponseDTO login(DoctorLoginRequestDTO request) {
+        log.info("Doctor login for phone: {}", request.getPhone());
+
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getPhone(),
-                        request.getPassword()
-                )
+                new UsernamePasswordAuthenticationToken(request.getPhone(), request.getPassword())
         );
 
-        // Find doctor by email
-        DoctorEntity doctor = doctorRepository.findByEmail(request.getPhone())
+        DoctorEntity doctor = doctorRepository.findByPhone(request.getPhone())
                 .orElseThrow(() -> new RuntimeException("Doctor not found"));
 
-        // Generate token
-        String token = jwtService.generateToken(doctor, doctor.getId());
-
-        return AuthResponseDTO.builder()
-                .token(token)
-                .workerId(doctor.getId())
-                .fullName(doctor.getFullName())
-                .email(doctor.getEmail())
-                .phone(doctor.getPhone())
-                .healthCenter(doctor.getHospital())
-                .district(doctor.getDistrict())
-                .message("Login successful")
-                .build();
+        String token = jwtService.generateToken(doctor.getPhone(), doctor.getId(), "DOCTOR");
+        return buildResponse(doctor, token, "Login successful");
     }
 
-    public DoctorProfileResponseDTO getDoctorProfile(DoctorEntity doctor) {
-        return DoctorProfileResponseDTO.builder()
+    private DoctorAuthResponseDTO buildResponse(DoctorEntity doctor, String token, String message) {
+        return DoctorAuthResponseDTO.builder()
+                .token(token)
+                .role("DOCTOR")
                 .doctorId(doctor.getId())
                 .fullName(doctor.getFullName())
-                .email(doctor.getEmail())
                 .phone(doctor.getPhone())
+                .email(doctor.getEmail())
                 .specialization(doctor.getSpecialization())
-                .licenseNumber(doctor.getLicenseNumber())
                 .hospital(doctor.getHospital())
                 .district(doctor.getDistrict())
-                .yearsOfExperience(doctor.getYearsOfExperience())
+                .registrationNo(doctor.getRegistrationNo())
                 .isAvailable(doctor.getIsAvailable())
-                .role(doctor.getRole())
+                .message(message)
                 .build();
-    }
-
-    public void updateAvailability(UUID doctorId, Boolean isAvailable) {
-        DoctorEntity doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
-        
-        doctor.setIsAvailable(isAvailable);
-        doctorRepository.save(doctor);
     }
 }

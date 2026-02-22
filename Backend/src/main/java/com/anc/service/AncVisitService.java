@@ -21,6 +21,7 @@ public class AncVisitService {
     private final AncVisitMapper visitMapper;
     private final ClinicalSummaryBuilder summaryBuilder;
     private final FastApiClient fastApiClient;
+    private final ConsultationService consultationService;
 
     @Transactional
     public AncVisitResponseDTO registerVisit(AncVisitRequestDTO request) {
@@ -64,7 +65,18 @@ public class AncVisitService {
         // 6. Update DB (status = AI_ANALYZED or AI_FAILED)
         entity = visitRepository.save(entity);
 
-        // 7. Build response DTO
+        // 7. Auto-create consultation if high risk
+        if (Boolean.TRUE.equals(entity.getIsHighRisk())) {
+            try {
+                consultationService.createFromVisit(entity);
+                log.info("Consultation auto-created for high risk visit: {}", entity.getId());
+            } catch (Exception e) {
+                log.error("Failed to create consultation for visit {}: {}", entity.getId(), e.getMessage());
+                // Non-blocking — don't fail the visit registration
+            }
+        }
+
+        // 8. Build response DTO
         return visitMapper.toResponseDTO(entity, aiResponse);
     }
 

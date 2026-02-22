@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getPatientById } from '../api/patientApi';
+import { getPatient } from '../api/patientApi';
 import { getPatientVisits } from '../api/visitApi';
 import Spinner from '../components/ui/Spinner';
 import Button from '../components/ui/Button';
@@ -23,7 +23,7 @@ export default function PatientDetailPage() {
     const fetchData = async () => {
       try {
         const [patientData, visitsData] = await Promise.all([
-          getPatientById(id),
+          getPatient(id),
           getPatientVisits(id),
         ]);
         setPatient(patientData);

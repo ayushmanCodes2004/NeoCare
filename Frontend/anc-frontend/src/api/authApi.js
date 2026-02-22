@@ -1,20 +1,10 @@
-import axiosInstance from './axiosInstance';
+import api from './axiosInstance';
 
-/**
- * Auth API — matches AuthController.java endpoints
- */
+// POST /api/auth/signup → { fullName, phone, email, password, healthCenter, district }
+export const workerSignup = (data) => api.post('/api/auth/signup', data).then(r => r.data);
 
-export const signup = async (data) => {
-  const response = await axiosInstance.post('/api/auth/signup', data);
-  return response.data;
-};
+// POST /api/auth/login → { phone, password }
+export const workerLogin = (data) => api.post('/api/auth/login', data).then(r => r.data);
 
-export const login = async (data) => {
-  const response = await axiosInstance.post('/api/auth/login', data);
-  return response.data;
-};
-
-export const getMe = async () => {
-  const response = await axiosInstance.get('/api/auth/me');
-  return response.data;
-};
+// GET /api/auth/me
+export const workerMe = () => api.get('/api/auth/me').then(r => r.data);

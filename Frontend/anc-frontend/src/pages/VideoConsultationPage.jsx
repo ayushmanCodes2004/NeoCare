@@ -27,7 +27,7 @@ export default function VideoConsultationPage() {
   useEffect(() => {
     const fetchConsultation = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('anc_token');
         const response = await axios.get(`${API_BASE_URL}/api/consultations/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });

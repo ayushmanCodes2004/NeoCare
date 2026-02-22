@@ -22,7 +22,7 @@ export default function ConsultationDetailPage() {
   useEffect(() => {
     const fetchConsultation = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('anc_token');
         const response = await axios.get(`${API_BASE_URL}/api/consultations/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -46,7 +46,9 @@ export default function ConsultationDetailPage() {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.put(
+      // TODO: Backend endpoint not implemented yet
+      console.warn('Schedule endpoint not implemented on backend');
+      await axios.post(
         `${API_BASE_URL}/api/consultations/${id}/schedule`,
         { scheduledDateTime },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -68,8 +70,8 @@ export default function ConsultationDetailPage() {
 
     setActionLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(
+      const token = localStorage.getItem('anc_token');
+      await axios.post(
         `${API_BASE_URL}/api/consultations/${id}/complete`,
         { doctorNotes: notes },
         { headers: { Authorization: `Bearer ${token}` } }

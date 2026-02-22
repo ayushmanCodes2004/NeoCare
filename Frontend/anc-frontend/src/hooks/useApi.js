@@ -1,32 +1,25 @@
 import { useState, useCallback } from 'react';
 
-/**
- * Generic hook to wrap any async API call with loading + error state.
- */
-export function useApi(apiFunction) {
+export function useApi(fn) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const execute = useCallback(async (...args) => {
+  const run = useCallback(async (...args) => {
     setLoading(true);
     setError(null);
     try {
-      const result = await apiFunction(...args);
+      const result = await fn(...args);
       setData(result);
       return result;
-    } catch (err) {
-      const message =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        err.message ||
-        'Something went wrong';
-      setError(message);
-      throw err;
+    } catch (e) {
+      const msg = e.response?.data?.message || e.message || 'Request failed';
+      setError(msg);
+      throw e;
     } finally {
       setLoading(false);
     }
-  }, [apiFunction]);
+  }, [fn]);
 
-  return { execute, data, loading, error, setData };
+  return { data, loading, error, run, setData };
 }

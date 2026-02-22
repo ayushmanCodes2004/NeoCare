@@ -1,0 +1,93 @@
+==============================================
+QUICK ENCRYPTION CHECK - COPY & PASTE
+==============================================
+
+1. OPEN POSTGRESQL:
+-------------------
+Method A - pgAdmin:
+  - Open pgAdmin
+  - Connect to NeoSure database
+  - Click "Query Tool"
+  - Paste query below
+
+Method B - Command Line:
+  psql -U postgres -d NeoSure
+
+
+2. PASTE THIS QUERY:
+--------------------
+
+SELECT 
+    'Workers' as table_name,
+    COUNT(*) as total,
+    COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END) as encrypted,
+    COUNT(CASE WHEN LENGTH(full_name) < 40 THEN 1 END) as unencrypted,
+    ROUND(100.0 * COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END) / NULLIF(COUNT(*), 0), 2) || '%' as encrypted_pct
+FROM anc_workers
+UNION ALL
+SELECT 'Patients', COUNT(*), 
+    COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END),
+    COUNT(CASE WHEN LENGTH(full_name) < 40 THEN 1 END),
+    ROUND(100.0 * COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END) / NULLIF(COUNT(*), 0), 2) || '%'
+FROM patients
+UNION ALL
+SELECT 'Doctors', COUNT(*), 
+    COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END),
+    COUNT(CASE WHEN LENGTH(full_name) < 40 THEN 1 END),
+    ROUND(100.0 * COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END) / NULLIF(COUNT(*), 0), 2) || '%'
+FROM doctors;
+
+
+3. EXPECTED RESULT (All Encrypted):
+------------------------------------
+ table_name | total | encrypted | unencrypted | encrypted_pct 
+------------+-------+-----------+-------------+---------------
+ Workers    |     1 |         1 |           0 | 100.00%
+ Patients   |     1 |         1 |           0 | 100.00%
+ Doctors    |     0 |         0 |           0 | %
+
+
+4. SEE ACTUAL ENCRYPTED DATA:
+------------------------------
+
+SELECT 
+    'Worker' as type,
+    SUBSTRING(full_name, 1, 50) as encrypted_sample,
+    phone as plain_phone
+FROM anc_workers LIMIT 1
+UNION ALL
+SELECT 
+    'Patient',
+    SUBSTRING(full_name, 1, 50),
+    phone
+FROM patients LIMIT 1;
+
+
+5. FIND UNENCRYPTED RECORDS:
+-----------------------------
+
+SELECT 'Worker' as type, id, full_name, email
+FROM anc_workers WHERE LENGTH(full_name) < 40 OR LENGTH(email) < 40
+UNION ALL
+SELECT 'Patient', id::text, full_name, address
+FROM patients WHERE LENGTH(full_name) < 40 OR LENGTH(address) < 40;
+
+-- If this returns 0 rows, all data is encrypted!
+
+
+==============================================
+POWERSHELL ONE-LINER (Windows):
+==============================================
+
+$env:PGPASSWORD = "ayushman@2004"; & "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -d NeoSure -c "SELECT 'Workers' as table_name, COUNT(*) as total, COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END) as encrypted FROM anc_workers UNION ALL SELECT 'Patients', COUNT(*), COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END) FROM patients UNION ALL SELECT 'Doctors', COUNT(*), COUNT(CASE WHEN LENGTH(full_name) >= 40 THEN 1 END) FROM doctors;"
+
+
+==============================================
+YOUR CURRENT STATUS:
+==============================================
+
+✅ Workers: 1 total, 1 encrypted (100%)
+✅ Patients: 1 total, 1 encrypted (100%)
+✅ Doctors: 0 total, 0 encrypted (N/A)
+
+All data is encrypted! No action needed.

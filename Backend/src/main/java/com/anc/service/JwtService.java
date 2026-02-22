@@ -42,12 +42,30 @@ public class JwtService {
      * Requirements: 2.2, 11.1, 11.2, 11.3, 11.4, 11.5
      */
     public String generateToken(UserDetails userDetails, UUID workerId) {
+        return generateToken(userDetails.getUsername(), workerId.toString(), "WORKER");
+    }
+
+    /**
+     * Generate JWT for ANC Worker (role = "WORKER")
+     */
+    public String generateToken(String phone, String userId) {
+        return generateToken(phone, userId, "WORKER");
+    }
+
+    /**
+     * Generate JWT for any user type with explicit role.
+     * Role is stored in JWT claims and used by SecurityConfig
+     * to enforce role-based endpoint access.
+     */
+    public String generateToken(String phone, String userId, String role) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("workerId", workerId.toString());
+        claims.put("userId", userId);
+        claims.put("workerId", userId); // Keep for backward compatibility
+        claims.put("role", role);   // "WORKER" or "DOCTOR"
         
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userDetails.getUsername()) // phone number as subject
+                .setSubject(phone) // phone number as subject
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -78,6 +96,21 @@ public class JwtService {
         Claims claims = extractAllClaims(token);
         String workerIdStr = claims.get("workerId", String.class);
         return UUID.fromString(workerIdStr);
+    }
+
+    /**
+     * Extract role from JWT claims.
+     * Used by SecurityConfig and controllers to enforce role checks.
+     */
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
+    /**
+     * Extract userId (workerId or doctorId depending on role).
+     */
+    public String extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", String.class));
     }
 
     /**

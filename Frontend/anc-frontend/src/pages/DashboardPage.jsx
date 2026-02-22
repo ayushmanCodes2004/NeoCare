@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { getMyPatients } from '../api/patientApi';
+import { getPatients } from '../api/patientApi';
 import { TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import Spinner from '../components/ui/Spinner';
 import '../styles/dashboard.css';
@@ -28,7 +28,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const patientsData = await getMyPatients();
+        const patientsData = await getPatients();
         setPatients(patientsData);
         
         // Get worker info from localStorage

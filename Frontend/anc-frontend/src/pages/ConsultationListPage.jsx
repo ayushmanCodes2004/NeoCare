@@ -22,8 +22,8 @@ export default function ConsultationListPage() {
   useEffect(() => {
     const fetchConsultations = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_BASE_URL}/api/consultations/doctor/my-consultations`, {
+        const token = localStorage.getItem('anc_token');
+        const response = await axios.get(`${API_BASE_URL}/api/consultations/my-history`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setConsultations(response.data);

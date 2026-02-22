@@ -1,5 +1,6 @@
 package com.anc.entity;
 
+import com.anc.security.EncryptedStringConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,16 +31,19 @@ public class PatientEntity {
     @JoinColumn(name = "worker_id", nullable = false)
     private AncWorkerEntity worker;
 
-    @Column(name = "full_name", nullable = false)
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "full_name", nullable = false, length = 500)
     private String fullName;
 
+    // Phone is searchable - keep unencrypted for queries
     @Column(name = "phone", nullable = false, length = 15)
     private String phone;
 
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column(name = "address", nullable = false)
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "address", nullable = false, length = 1000)
     private String address;
 
     @Column(name = "village", nullable = false)

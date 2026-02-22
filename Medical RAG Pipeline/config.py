@@ -2,6 +2,8 @@
 # config.py — All configuration constants for Medical RAG
 # ============================================================
 
+import os
+
 PDF_PATH = "jogh-13-04116_merged.pdf"
 FAISS_INDEX_DIR = "./faiss_medical_index"
 
@@ -36,7 +38,7 @@ CONFIDENCE_LOW_FALLBACK_K = 3        # even at low confidence, try to return top
 # ----------------------------
 # LLM PARAMETERS (OpenAI)
 # ----------------------------
-OPENAI_API_KEY = "your-openai-api-key-here"  # Replace with your actual OpenAI API key
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-openai-api-key-here")  # Set via environment variable
 OPENAI_MODEL = "gpt-4o-mini"  # or "gpt-4o" for better quality
 TEMPERATURE = 0.0          # MUST be 0.0 for medical RAG — deterministic output
 MAX_TOKENS = 1024

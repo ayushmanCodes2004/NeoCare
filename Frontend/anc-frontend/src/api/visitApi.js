@@ -1,30 +1,16 @@
-import axiosInstance from './axiosInstance';
+import api from './axiosInstance';
 
-/**
- * ANC Visit API — matches AncVisitController.java endpoints
- */
+// POST /api/anc/register-visit
+export const registerVisit = (data) => api.post('/api/anc/register-visit', data).then(r => r.data);
 
-export const registerVisit = async (data) => {
-  const response = await axiosInstance.post('/api/anc/register-visit', data);
-  return response.data;
-};
+// GET /api/anc/visits/:visitId
+export const getVisit = (id) => api.get(`/api/anc/visits/${id}`).then(r => r.data);
 
-export const getPatientVisits = async (patientId) => {
-  const response = await axiosInstance.get(`/api/anc/patients/${patientId}/visits`);
-  return response.data;
-};
+// GET /api/anc/patients/:patientId/visits
+export const getPatientVisits = (id) => api.get(`/api/anc/patients/${id}/visits`).then(r => r.data);
 
-export const getVisitById = async (visitId) => {
-  const response = await axiosInstance.get(`/api/anc/visits/${visitId}`);
-  return response.data;
-};
+// GET /api/anc/visits/high-risk
+export const getHighRisk = () => api.get('/api/anc/visits/high-risk').then(r => r.data);
 
-export const getHighRiskVisits = async () => {
-  const response = await axiosInstance.get('/api/anc/visits/high-risk');
-  return response.data;
-};
-
-export const getCriticalVisits = async () => {
-  const response = await axiosInstance.get('/api/anc/visits/critical');
-  return response.data;
-};
+// GET /api/anc/visits/critical
+export const getCritical = () => api.get('/api/anc/visits/critical').then(r => r.data);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getVisitById } from '../api/visitApi';
+import { getVisit } from '../api/visitApi';
 import RiskBanner from '../components/visits/RiskBanner';
 import DetectedRisksList from '../components/visits/DetectedRisksList';
 import Spinner from '../components/ui/Spinner';
@@ -21,7 +21,7 @@ export default function VisitResultPage() {
   useEffect(() => {
     const fetchVisit = async () => {
       try {
-        const data = await getVisitById(id);
+        const data = await getVisit(id);
         setVisit(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load visit details');

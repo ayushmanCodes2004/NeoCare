@@ -34,7 +34,14 @@ const ConsultationDetail = () => {
   const handleStartCall = async () => {
     if (!id) return;
     setActionLoading(true);
-    try { await startCall(id); setConsultation((p: any) => ({ ...p, status: 'IN_PROGRESS' })); } catch {} finally { setActionLoading(false); }
+    try {
+      await startCall(id);
+      setConsultation((p: any) => ({ ...p, status: 'IN_PROGRESS' }));
+      // Navigate to video call page
+      navigate(`/doctor/consultations/${id}/video`);
+    } catch {} finally {
+      setActionLoading(false);
+    }
   };
 
   const handleComplete = async () => {

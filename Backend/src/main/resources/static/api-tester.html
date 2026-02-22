@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoSure API Tester</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 {
+            color: #C4622D;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .token-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .token-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .endpoints {
+            display: grid;
+            gap: 15px;
+        }
+        .endpoint {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .method {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .method.post { background: #49cc90; color: white; }
+        .method.get { background: #61affe; color: white; }
+        .method.put { background: #fca130; color: white; }
+        .endpoint-path {
+            font-family: monospace;
+            color: #333;
+            font-size: 14px;
+        }
+        .endpoint-desc {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            min-height: 120px;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #C4622D;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover { background: #9E4A1E; }
+        .response {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 4px;
+            border-left: 3px solid #C4622D;
+            display: none;
+        }
+        .response.show { display: block; }
+        .response pre {
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 NeoSure API Tester</h1>
+        <p class="subtitle">Minimal UI for testing all backend endpoints</p>
+
+        <div class="token-section">
+            <label><strong>JWT Token (paste after login):</strong></label>
+            <input type="text" id="token" class="token-input" placeholder="Paste your JWT token here...">
+        </div>
+
+        <div class="endpoints">
+            <!-- Worker Signup -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/auth/signup</span>
+                </div>
+                <div class="endpoint-desc">Register new ANC worker</div>
+                <textarea id="worker-signup-body">{
+  "fullName": "Priya Sharma",
+  "phone": "9876543210",
+  "email": "priya@health.gov.in",
+  "password": "SecurePass123",
+  "healthCenter": "PHC Bangalore",
+  "district": "Bangalore Urban"
+}</textarea>
+                <button onclick="callAPI('POST', '/api/auth/signup', 'worker-signup')">Send Request</button>
+                <div id="worker-signup-response" class="response"></div>
+            </div>
+
+            <!-- Worker Login -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/auth/login</span>
+                </div>
+                <div class="endpoint-desc">Worker login - Copy token from response</div>
+                <textarea id="worker-login-body">{
+  "phone": "9876543210",
+  "password": "SecurePass123"
+}</textarea>
+                <button onclick="callAPI('POST', '/api/auth/login', 'worker-login')">Send Request</button>
+                <div id="worker-login-response" class="response"></div>
+            </div>
+
+            <!-- Doctor Signup -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/doctor/auth/signup</span>
+                </div>
+                <div class="endpoint-desc">Register new doctor</div>
+                <textarea id="doctor-signup-body">{
+  "fullName": "Dr. Rajesh Kumar",
+  "phone": "9988776655",
+  "email": "rajesh@hospital.in",
+  "password": "DoctorPass123",
+  "specialization": "Obstetrics & Gynaecology",
+  "hospital": "District Hospital",
+  "district": "Bangalore Urban",
+  "registrationNo": "KA-12345"
+}</textarea>
+                <button onclick="callAPI('POST', '/api/doctor/auth/signup', 'doctor-signup')">Send Request</button>
+                <div id="doctor-signup-response" class="response"></div>
+            </div>
+
+            <!-- Doctor Login -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/doctor/auth/login</span>
+                </div>
+                <div class="endpoint-desc">Doctor login - Copy token from response</div>
+                <textarea id="doctor-login-body">{
+  "phone": "9988776655",
+  "password": "DoctorPass123"
+}</textarea>
+                <button onclick="callAPI('POST', '/api/doctor/auth/login', 'doctor-login')">Send Request</button>
+                <div id="doctor-login-response" class="response"></div>
+            </div>
+
+            <!-- Create Patient -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/patients</span>
+                </div>
+                <div class="endpoint-desc">Create new patient (requires worker token)</div>
+                <textarea id="create-patient-body">{
+  "fullName": "Lakshmi Devi",
+  "phone": "9123456789",
+  "age": 26,
+  "address": "123 Main Street",
+  "village": "Koramangala",
+  "district": "Bangalore Urban",
+  "lmpDate": "2024-01-15",
+  "eddDate": "2024-10-22",
+  "bloodGroup": "O+"
+}</textarea>
+                <button onclick="callAPI('POST', '/api/patients', 'create-patient', true)">Send Request</button>
+                <div id="create-patient-response" class="response"></div>
+            </div>
+
+            <!-- Get Patients -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/api/patients</span>
+                </div>
+                <div class="endpoint-desc">Get all patients for worker (requires token)</div>
+                <button onclick="callAPI('GET', '/api/patients', 'get-patients', true)">Send Request</button>
+                <div id="get-patients-response" class="response"></div>
+            </div>
+
+            <!-- Get Consultation Queue -->
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/api/consultations/queue</span>
+                </div>
+                <div class="endpoint-desc">Get doctor's consultation queue (requires doctor token)</div>
+                <button onclick="callAPI('GET', '/api/consultations/queue', 'get-queue', true)">Send Request</button>
+                <div id="get-queue-response" class="response"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080';
+
+        async function callAPI(method, endpoint, responseId, requiresAuth = false) {
+            const responseDiv = document.getElementById(responseId + '-response');
+            const bodyTextarea = document.getElementById(responseId + '-body');
+            
+            try {
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+
+                if (requiresAuth) {
+                    const token = document.getElementById('token').value.trim();
+                    if (!token) {
+                        showResponse(responseDiv, 'error', 'Please paste JWT token above', null);
+                        return;
+                    }
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const options = {
+                    method: method,
+                    headers: headers
+                };
+
+                if (method !== 'GET' && bodyTextarea) {
+                    options.body = bodyTextarea.value;
+                }
+
+                const response = await fetch(API_BASE + endpoint, options);
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResponse(responseDiv, 'success', response.status, data);
+                    
+                    // Auto-fill token if login response
+                    if ((endpoint.includes('/login') || endpoint.includes('/signup')) && data.token) {
+                        document.getElementById('token').value = data.token;
+                    }
+                } else {
+                    showResponse(responseDiv, 'error', response.status, data);
+                }
+            } catch (error) {
+                showResponse(responseDiv, 'error', 'Network Error', { message: error.message });
+            }
+        }
+
+        function showResponse(div, type, status, data) {
+            div.className = 'response show';
+            div.innerHTML = `
+                <span class="status ${type}">${status}</span>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+    </script>
+</body>
+</html>

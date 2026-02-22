@@ -21,6 +21,7 @@ import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 import ConsultationQueue from "./pages/doctor/ConsultationQueue";
 import ConsultationDetail from "./pages/doctor/ConsultationDetail";
 import DoctorHistory from "./pages/doctor/DoctorHistory";
+import VideoConsultation from "./pages/doctor/VideoConsultation";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/doctor/dashboard" element={<ProtectedRoute requiredRole="DOCTOR"><DoctorDashboard /></ProtectedRoute>} />
             <Route path="/doctor/consultations" element={<ProtectedRoute requiredRole="DOCTOR"><ConsultationQueue /></ProtectedRoute>} />
             <Route path="/doctor/consultations/:id" element={<ProtectedRoute requiredRole="DOCTOR"><ConsultationDetail /></ProtectedRoute>} />
+            <Route path="/doctor/consultations/:id/video" element={<ProtectedRoute requiredRole="DOCTOR"><VideoConsultation /></ProtectedRoute>} />
             <Route path="/doctor/history" element={<ProtectedRoute requiredRole="DOCTOR"><DoctorHistory /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>

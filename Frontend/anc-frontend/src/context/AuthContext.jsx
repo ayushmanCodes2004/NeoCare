@@ -1,120 +1,55 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
-import { login as apiLogin, signup as apiSignup } from '../api/authApi';
-
-/**
- * AuthContext — global authentication state.
- *
- * Provides:
- *   user, token, isLoading, userRole, login(), signup(), logout()
- *   Supports both ANC workers and doctors
- */
+import { workerLogin, workerSignup } from '../api/authApi';
 
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [userRole, setUserRole] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [ready, setReady] = useState(false);
 
-  // Restore session from localStorage on app load
   useEffect(() => {
-    // Check for new format (doctor/worker)
-    const storedToken = localStorage.getItem('token');
-    const storedRole = localStorage.getItem('userRole');
+    const token = localStorage.getItem('anc_token');
+    const stored = localStorage.getItem('anc_user');
+    const role = localStorage.getItem('anc_role');
     
-    if (storedToken && storedRole) {
-      setToken(storedToken);
-      setUserRole(storedRole);
-      
-      if (storedRole === 'DOCTOR') {
-        const doctorInfo = localStorage.getItem('doctorInfo');
-        if (doctorInfo) {
-          try {
-            setUser(JSON.parse(doctorInfo));
-          } catch {
-            localStorage.clear();
-          }
-        }
-      } else {
-        // Try old format for workers
-        const storedWorker = localStorage.getItem('anc_worker');
-        if (storedWorker) {
-          try {
-            setUser(JSON.parse(storedWorker));
-          } catch {
-            localStorage.clear();
-          }
-        }
-      }
-    } else {
-      // Fallback to old format
-      const oldToken = localStorage.getItem('anc_token');
-      const oldWorker = localStorage.getItem('anc_worker');
-      
-      if (oldToken && oldWorker) {
-        try {
-          setToken(oldToken);
-          setUser(JSON.parse(oldWorker));
-          setUserRole('WORKER');
-        } catch {
-          localStorage.clear();
-        }
+    if (token && stored && role === 'WORKER') {
+      try {
+        setUser(JSON.parse(stored));
+      } catch {
+        localStorage.clear();
       }
     }
-    
-    setIsLoading(false);
+    setReady(true);
   }, []);
 
-  // Persist auth data to localStorage
-  const persistAuth = (authResponse) => {
-    const { token, ...userInfo } = authResponse;
-    localStorage.setItem('token', token);
-    localStorage.setItem('anc_token', token); // Keep old format for compatibility
-    localStorage.setItem('anc_worker', JSON.stringify(userInfo));
-    localStorage.setItem('userRole', 'WORKER');
-    setToken(token);
-    setUser(userInfo);
-    setUserRole('WORKER');
+  const persist = (data) => {
+    const { token, ...info } = data;
+    localStorage.setItem('anc_token', token);
+    localStorage.setItem('anc_user', JSON.stringify(info));
+    localStorage.setItem('anc_role', 'WORKER');
+    setUser(info);
   };
 
-  // Login
   const login = useCallback(async (phone, password) => {
-    const authResponse = await apiLogin({ phone, password });
-    persistAuth(authResponse);
-    return authResponse;
+    const result = await workerLogin({ phone, password });
+    persist(result);
+    return result;
   }, []);
 
-  // Signup
-  const signup = useCallback(async (formData) => {
-    const authResponse = await apiSignup(formData);
-    persistAuth(authResponse);
-    return authResponse;
+  const signup = useCallback(async (data) => {
+    const result = await workerSignup(data);
+    persist(result);
+    return result;
   }, []);
 
-  // Logout
   const logout = useCallback(() => {
     localStorage.clear();
-    setToken(null);
     setUser(null);
-    setUserRole(null);
-    window.location.href = '/';
+    window.location.href = '/login';
   }, []);
 
-  const value = {
-    worker: user, // Keep 'worker' for backward compatibility
-    user,
-    token,
-    userRole,
-    isLoading,
-    isAuthenticated: !!token,
-    login,
-    signup,
-    logout,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, ready, isAuth: !!user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
